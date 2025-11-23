@@ -5,7 +5,12 @@ import com.mycompany.movieapp.exceptions.*;
 import java.util.*;
 
 public class BookingService {
+    private static List<Booking> allBookings = new ArrayList<>();
+    private static int bookingIdCounter = 1000;
 
+    /**
+     * Create a new booking
+     */
     public static Booking createBooking(Customer customer, Schedule schedule, List<ShowSeat> selectedSeats)
             throws InvalidBookingException, SeatNotAvailableException {
 
@@ -39,16 +44,18 @@ public class BookingService {
         for (ShowSeat seat : selectedSeats) {
             booking.addSeat(seat);
         }
-
+        
+        allBookings.add(booking);
         return booking;
     }
-
-    private static int bookingIdCounter = 1000;
 
     private static int generateBookingId() {
         return bookingIdCounter++;
     }
 
+    /**
+     * Confirm and pay for a booking
+     */
     public static boolean confirmAndPayBooking(Booking booking, String paymentMethod) {
         try {
             // Confirm booking
@@ -56,22 +63,75 @@ public class BookingService {
                 return false;
             }
 
-            // Process payment
-            Payment payment = new Payment();
-            payment.setBooking(booking);
-            payment.setMethod(paymentMethod);
-            payment.setAmount(booking.getTotalPrice());
-
-            if (payment.processPayment()) {
-                booking.setPayment(payment);
-                return true;
-            }
-
-            return false;
+            // Process payment using PaymentService
+            return PaymentService.processPayment(booking, paymentMethod);
 
         } catch (Exception e) {
             System.out.println("Lỗi: " + e.getMessage());
             return false;
         }
+    }
+    
+    /**
+     * Get booking by ID for a customer
+     */
+    public static Booking getBookingById(Customer customer, int bookingId) {
+        if (customer == null) {
+            return null;
+        }
+        return customer.getBookingHistory().stream()
+                .filter(b -> b.getBookingId() == bookingId)
+                .findFirst()
+                .orElse(null);
+    }
+    
+    /**
+     * Get all bookings for a customer
+     */
+    public static List<Booking> getBookingHistory(Customer customer) {
+        if (customer == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(customer.getBookingHistory());
+    }
+    
+    /**
+     * Cancel a booking
+     */
+    public static boolean cancelBooking(Booking booking) {
+        if (booking == null) {
+            return false;
+        }
+        
+        if (!booking.isCancelable()) {
+            System.out.println("Không thể hủy booking này!");
+            return false;
+        }
+        
+        boolean canceled = booking.cancelBooking();
+        if (canceled && booking.getPayment() != null) {
+            PaymentService.refundPayment(booking.getPayment());
+        }
+        
+        return canceled;
+    }
+    
+    /**
+     * Get all bookings
+     */
+    public static List<Booking> getAllBookings() {
+        return new ArrayList<>(allBookings);
+    }
+    
+    /**
+     * Get bookings by schedule
+     */
+    public static List<Booking> getBookingsBySchedule(Schedule schedule) {
+        if (schedule == null) {
+            return new ArrayList<>();
+        }
+        return allBookings.stream()
+                .filter(b -> b.getSchedule().equals(schedule))
+                .collect(java.util.stream.Collectors.toList());
     }
 }

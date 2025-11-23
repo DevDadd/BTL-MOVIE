@@ -5,6 +5,9 @@
 package com.mycompany.movieapp.views;
 import javax.swing.JFrame; 
 import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
+import com.mycompany.movieapp.services.UserService;
+import com.mycompany.movieapp.models.User;
 
 /**
  *
@@ -102,11 +105,40 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        HomePage homeFrame = new HomePage(); 
-        homeFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        homeFrame.setLocationRelativeTo(null); 
-        homeFrame.setVisible(true);
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        String username = jTextField1.getText().trim();
+        String password = new String(jPasswordField1.getPassword());
+        
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter both username and password.", 
+                "Login Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        User authenticatedUser = UserService.authenticate(username, password);
+        
+        if (authenticatedUser != null) {
+            JOptionPane.showMessageDialog(this, 
+                "Login successful! Welcome, " + authenticatedUser.getUsername() + ".", 
+                "Success", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            HomePage homeFrame = new HomePage(); 
+            homeFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+            homeFrame.setLocationRelativeTo(null); 
+            homeFrame.setVisible(true);
+            
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Invalid username or password. Please try again.", 
+                "Login Failed", 
+                JOptionPane.ERROR_MESSAGE);
+            
+            jPasswordField1.setText("");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
