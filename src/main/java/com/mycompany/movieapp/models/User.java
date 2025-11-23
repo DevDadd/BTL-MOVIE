@@ -9,6 +9,7 @@ public abstract class User {
     protected String email;
     protected String phoneNumber;
     protected String address;
+    protected String role;
     protected AccountStatus status;
 
     public User() {
@@ -85,6 +86,9 @@ public abstract class User {
 
     public AccountStatus getStatus() { return status; }
     public void setStatus(AccountStatus status) { this.status = status; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
     @Override
     public String toString() {

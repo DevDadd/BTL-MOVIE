@@ -4,7 +4,8 @@ public enum BookingStatus {
     PENDING("Chờ xác nhận"),
     CONFIRMED("Đã xác nhận"),
     REJECTED("Bị từ chối"),
-    CANCELED("Đã hủy");
+    CANCELED("Đã hủy"),
+    PAID("Đã thanh toán");
 
     private final String displayName;
 

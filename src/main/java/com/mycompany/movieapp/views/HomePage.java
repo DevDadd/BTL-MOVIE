@@ -183,6 +183,7 @@ public class HomePage extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelMoviesContainer = new javax.swing.JPanel();
         historyButton = new javax.swing.JButton();
+        adminButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -191,7 +192,14 @@ public class HomePage extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PHIM ĐANG CHIẾU");
 
-        historyButton.setText("Lịch sử đặt chỗ");
+        adminButton.setText("Quản lý");
+        adminButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        adminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            }
+        });
+
+        historyButton.setText("Meine Tickets");
         historyButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         historyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,7 +222,9 @@ public class HomePage extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(historyButton))
+                        .addComponent(historyButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(adminButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -224,7 +234,8 @@ public class HomePage extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(historyButton))
+                    .addComponent(historyButton)
+                    .addComponent(adminButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                 .addContainerGap())
@@ -251,6 +262,7 @@ public class HomePage extends javax.swing.JFrame {
     }
 
     private javax.swing.JButton historyButton;
+    private javax.swing.JButton adminButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanelMoviesContainer;
     private javax.swing.JScrollPane jScrollPane1;

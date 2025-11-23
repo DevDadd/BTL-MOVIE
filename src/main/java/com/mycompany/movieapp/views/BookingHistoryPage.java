@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -78,32 +79,37 @@ public class BookingHistoryPage extends javax.swing.JFrame {
             new EmptyBorder(15, 15, 15, 15)
         ));
         panel.setBackground(Color.WHITE);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new BorderLayout(15, 0));
         panel.setPreferredSize(new Dimension(0, 150));
         panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
+        
+        // Left panel with booking info
+        javax.swing.JPanel infoPanel = new javax.swing.JPanel();
+        infoPanel.setBackground(Color.WHITE);
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         
         // Booking ID and Status
         javax.swing.JLabel idLabel = new javax.swing.JLabel(
             "Mã booking: #" + booking.getBookingId() + " | Trạng thái: " + booking.getStatus().getDisplayName()
         );
         idLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        panel.add(idLabel);
+        infoPanel.add(idLabel);
         
-        panel.add(javax.swing.Box.createVerticalStrut(8));
+        infoPanel.add(javax.swing.Box.createVerticalStrut(8));
         
         // Movie and Schedule info
         javax.swing.JLabel movieLabel = new javax.swing.JLabel(
             "Phim: " + booking.getSchedule().getMovie().getTitle()
         );
         movieLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        panel.add(movieLabel);
+        infoPanel.add(movieLabel);
         
         javax.swing.JLabel scheduleLabel = new javax.swing.JLabel(
             "Suất chiếu: " + booking.getSchedule().getStartTime().format(dateFormatter) + 
             " | Phòng: " + booking.getSchedule().getRoom().getName()
         );
         scheduleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        panel.add(scheduleLabel);
+        infoPanel.add(scheduleLabel);
         
         // Seats
         StringBuilder seatsText = new StringBuilder("Ghế: ");
@@ -113,7 +119,7 @@ public class BookingHistoryPage extends javax.swing.JFrame {
         }
         javax.swing.JLabel seatsLabel = new javax.swing.JLabel(seatsText.toString());
         seatsLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        panel.add(seatsLabel);
+        infoPanel.add(seatsLabel);
         
         // Total price
         javax.swing.JLabel priceLabel = new javax.swing.JLabel(
@@ -121,9 +127,39 @@ public class BookingHistoryPage extends javax.swing.JFrame {
         );
         priceLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
         priceLabel.setForeground(new Color(0, 100, 0));
-        panel.add(priceLabel);
+        infoPanel.add(priceLabel);
+        
+        // Right panel with payment button
+        javax.swing.JButton payButton = new javax.swing.JButton("Thanh toán");
+        payButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        payButton.setPreferredSize(new Dimension(120, 40));
+        
+        panel.add(infoPanel, BorderLayout.CENTER);
+        panel.add(payButton, BorderLayout.EAST);
+        payButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openPaymentMethodDialog(booking);
+            }
+        });
         
         return panel;
+    }
+    
+    /**
+     * Open payment method selection dialog
+     */
+    private void openPaymentMethodDialog(Booking booking) {
+        PaymentMethodDialog dialog = new PaymentMethodDialog(this, booking);
+        dialog.setVisible(true);
+        
+        if (dialog.isPaymentConfirmed()) {
+            String paymentMethod = dialog.getSelectedPaymentMethod();
+            // TODO: Process payment with selected method
+            // PaymentService.processPayment(booking, paymentMethod);
+            
+            // Reload booking history to reflect status changes
+            loadBookingHistory();
+        }
     }
 
     /**
