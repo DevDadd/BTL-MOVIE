@@ -125,7 +125,8 @@ public class Login extends javax.swing.JFrame {
                 "Success", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            HomePage homeFrame = new HomePage(); 
+            UserService.setCurrentUser(authenticatedUser);
+            HomePage homeFrame = new HomePage(authenticatedUser); 
             homeFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
             homeFrame.setLocationRelativeTo(null); 
             homeFrame.setVisible(true);

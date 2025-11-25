@@ -8,13 +8,14 @@ import java.util.List;
 
 public class UserService {
     private static List<User> users = new ArrayList<>();
+    private static User currentUser;
     
     static {
         // Initialize with some sample users for testing
         users.add(new Customer(1, "customer1", "password123", "customer1@example.com", "0123456789", "123 Main St"));
         users.add(new Customer(2, "customer2", "password123", "customer2@example.com", "0987654321", "456 Oak Ave"));
-        users.add(new Staff(3, "staff1", "admin123", "staff1@example.com", "0111222333", "789 Pine Rd", "Manager"));
-        users.add(new Staff(4, "admin", "admin", "admin@example.com", "0999888777", "321 Elm St", "Administrator"));
+        users.add(new Staff(3, "staff1", "admin123", "staff1@example.com", "0111222333", "789 Pine Rd", "Admin"));
+        users.add(new Staff(4, "admin", "admin", "admin@example.com", "0999888777", "321 Elm St", "Admin"));
     }
     
     /**
@@ -62,6 +63,14 @@ public class UserService {
      */
     public static List<User> getAllUsers() {
         return new ArrayList<>(users);
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
     }
 }
 

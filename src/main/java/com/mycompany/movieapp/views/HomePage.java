@@ -5,7 +5,10 @@
 package com.mycompany.movieapp.views;
 
 import com.mycompany.movieapp.services.MovieService;
+import com.mycompany.movieapp.services.UserService;
 import com.mycompany.movieapp.models.Movie;
+import com.mycompany.movieapp.models.User;
+import com.mycompany.movieapp.models.Staff;
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +17,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
@@ -25,12 +29,19 @@ import javax.swing.border.CompoundBorder;
 public class HomePage extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HomePage.class.getName());
+    private final User currentUser;
 
     /**
      * Creates new form HomePage
      */
     public HomePage() {
+        this(UserService.getCurrentUser());
+    }
+
+    public HomePage(User currentUser) {
+        this.currentUser = currentUser;
         initComponents();
+        configureAdminAccess();
         loadNowShowingMovies();
     }
     
@@ -171,6 +182,38 @@ public class HomePage extends javax.swing.JFrame {
         historyPage.setVisible(true);
     }
 
+    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        if (!isAdminUser()) {
+            JOptionPane.showMessageDialog(this,
+                    "Bạn không có quyền truy cập chức năng này.",
+                    "Access Denied",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        ConfigurePage configurePage = new ConfigurePage();
+        configurePage.setVisible(true);
+    }
+
+    private boolean isAdminUser() {
+        if (currentUser instanceof Staff) {
+            String role = ((Staff) currentUser).getRole();
+            return role != null && role.equalsIgnoreCase("Admin");
+        }
+        return false;
+    }
+
+    private void configureAdminAccess() {
+        boolean admin = isAdminUser();
+        if (adminButton != null) {
+            adminButton.setEnabled(admin);
+            if (!admin) {
+                adminButton.setToolTipText("Chỉ dành cho admin");
+            } else {
+                adminButton.setToolTipText(null);
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,10 +239,11 @@ public class HomePage extends javax.swing.JFrame {
         adminButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         adminButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminButtonActionPerformed(evt);
             }
         });
 
-        historyButton.setText("Meine Tickets");
+        historyButton.setText("Vé của tôi");
         historyButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         historyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
