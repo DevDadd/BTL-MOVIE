@@ -13,23 +13,23 @@ public class MovieService {
         allMovies.add(new Movie(1, "Avengers: Endgame", 
             "The epic conclusion to the Infinity Saga", "181 phút", 
             "Anthony Russo, Joe Russo", "Action", "Robert Downey Jr., Chris Evans", 
-            LocalDate.now().minusDays(10), "PG-13", ""));
+            LocalDate.now().minusDays(10).toString(), "PG-13", ""));
         allMovies.add(new Movie(2, "Spider-Man: No Way Home", 
             "Peter Parker's identity is revealed", "148 phút", 
             "Jon Watts", "Action", "Tom Holland, Zendaya", 
-            LocalDate.now().minusDays(5), "PG-13", ""));
+            LocalDate.now().minusDays(5).toString(), "PG-13", ""));
         allMovies.add(new Movie(3, "Dune", 
             "A noble family becomes embroiled in a war", "155 phút", 
             "Denis Villeneuve", "Sci-Fi", "Timothée Chalamet, Rebecca Ferguson", 
-            LocalDate.now().minusDays(3), "PG-13", ""));
+            LocalDate.now().minusDays(3).toString(), "PG-13", ""));
         allMovies.add(new Movie(4, "The Matrix Resurrections", 
             "Neo returns to the Matrix", "148 phút", 
             "Lana Wachowski", "Sci-Fi", "Keanu Reeves, Carrie-Anne Moss", 
-            LocalDate.now().minusDays(1), "R", ""));
+            LocalDate.now().minusDays(1).toString(), "R", ""));
         allMovies.add(new Movie(5, "No Time to Die", 
             "James Bond's final mission", "163 phút", 
             "Cary Joji Fukunaga", "Action", "Daniel Craig, Léa Seydoux", 
-            LocalDate.now().plusDays(5), "PG-13", ""));
+            LocalDate.now().plusDays(5).toString(), "PG-13", ""));
     }
     
     /**
@@ -85,7 +85,10 @@ public class MovieService {
             return new ArrayList<>();
         }
         return allMovies.stream()
-                .filter(m -> !m.getReleaseDate().isAfter(date))
+                .filter(m -> {
+                    LocalDate release = m.getReleaseDateAsDate();
+                    return release != null && !release.isAfter(date);
+                })
                 .filter(Movie::isActive)
                 .collect(Collectors.toList());
     }
@@ -117,8 +120,12 @@ public class MovieService {
     public static List<Movie> getUpcomingMovies(List<Movie> allMovies) {
         java.time.LocalDate today = java.time.LocalDate.now();
         return allMovies.stream()
-                .filter(m -> m.getReleaseDate().isAfter(today))
-                .sorted(Comparator.comparing(Movie::getReleaseDate))
+                .filter(m -> {
+                    LocalDate release = m.getReleaseDateAsDate();
+                    return release != null && release.isAfter(today);
+                })
+                .sorted(Comparator.comparing(Movie::getReleaseDateAsDate,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
                 .collect(Collectors.toList());
     }
     

@@ -69,6 +69,10 @@ public class HomePage extends javax.swing.JFrame {
         jPanelMoviesContainer.revalidate();
         jPanelMoviesContainer.repaint();
     }
+
+    public void refreshMovies() {
+        loadNowShowingMovies();
+    }
     
     /**
      * Create a container panel for a movie
@@ -129,7 +133,7 @@ public class HomePage extends javax.swing.JFrame {
         ratingLabel.setForeground(new Color(100, 100, 100));
         infoPanel.add(ratingLabel);
         
-        javax.swing.JLabel dateLabel = new javax.swing.JLabel("Khởi chiếu: " + movie.getReleaseDate().toString());
+        javax.swing.JLabel dateLabel = new javax.swing.JLabel("Khởi chiếu: " + movie.getReleaseDate());
         dateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         dateLabel.setForeground(new Color(100, 100, 100));
         infoPanel.add(dateLabel);
@@ -190,7 +194,7 @@ public class HomePage extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        ConfigurePage configurePage = new ConfigurePage();
+        Configure configurePage = new Configure(this);
         configurePage.setVisible(true);
     }
 

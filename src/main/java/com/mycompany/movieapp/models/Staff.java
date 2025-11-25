@@ -1,5 +1,6 @@
 package com.mycompany.movieapp.models;
 
+import com.mycompany.movieapp.services.MovieService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,19 +34,26 @@ public class Staff extends User {
     // Movie Management
     public boolean addMovie(Movie movie) {
         if (movie == null) return false;
+        MovieService.addMovie(movie);
         logActivity("Thêm phim: " + movie.getTitle());
         return true;
     }
 
     public boolean updateMovie(int movieId, Movie updatedMovie) {
         if (updatedMovie == null) return false;
-        logActivity("Cập nhật phim ID: " + movieId);
-        return true;
+        boolean success = MovieService.updateMovie(movieId, updatedMovie);
+        if (success) {
+            logActivity("Cập nhật phim ID: " + movieId);
+        }
+        return success;
     }
 
     public boolean deleteMovie(int movieId) {
-        logActivity("Xóa phim ID: " + movieId);
-        return true;
+        boolean success = MovieService.deleteMovie(movieId);
+        if (success) {
+            logActivity("Xóa phim ID: " + movieId);
+        }
+        return success;
     }
 
     // Schedule Management

@@ -1,5 +1,6 @@
 package com.mycompany.movieapp.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +40,10 @@ public class Customer extends User {
 
     public List<Movie> searchMovieByDate(java.time.LocalDate date, List<Movie> allMovies) {
         return allMovies.stream()
-                .filter(m -> !m.getReleaseDate().isAfter(date))
+                .filter(m -> {
+                    LocalDate release = m.getReleaseDateAsDate();
+                    return release != null && !release.isAfter(date);
+                })
                 .filter(Movie::isActive)
                 .collect(Collectors.toList());
     }
