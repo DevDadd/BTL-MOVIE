@@ -13,8 +13,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -28,6 +30,8 @@ public class PaymentMethodDialog extends JDialog {
     private Booking booking;
     private String selectedPaymentMethod;
     private boolean paymentConfirmed;
+    private double discountedPrice; // Lưu giá đã giảm (nếu có)
+    private boolean discountApplied; // Đánh dấu đã áp dụng mã giảm giá
     
     private JLabel titleLabel;
     private JLabel amountLabel;
@@ -35,8 +39,10 @@ public class PaymentMethodDialog extends JDialog {
     private JRadioButton momoRadio;
     private JRadioButton visaRadio;
     private JRadioButton mastercardRadio;
+    private JTextField discountCodeTextField;
     private JButton confirmButton;
     private JButton cancelButton;
+    private JButton applyDiscountButton;
     private ButtonGroup paymentMethodGroup;
     
     /**
@@ -50,6 +56,8 @@ public class PaymentMethodDialog extends JDialog {
         this.booking = booking;
         this.paymentConfirmed = false;
         this.selectedPaymentMethod = null;
+        this.discountedPrice = booking.getTotalPrice(); // Mặc định bằng giá gốc
+        this.discountApplied = false;
         initComponents();
     }
     
@@ -159,7 +167,55 @@ public class PaymentMethodDialog extends JDialog {
         mastercardRadio.setAlignmentX(JRadioButton.CENTER_ALIGNMENT);
         paymentMethodGroup.add(mastercardRadio);
         mainPanel.add(mastercardRadio);
-        
+
+        mainPanel.add(Box.createVerticalStrut(15));
+
+        discountCodeTextField = new JTextField("Nhập mã giảm giá");
+        discountCodeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        discountCodeTextField.setBackground(Color.WHITE);
+        discountCodeTextField.setAlignmentX(JTextField.CENTER_ALIGNMENT);
+        mainPanel.add(discountCodeTextField);
+
+        mainPanel.add(Box.createVerticalStrut(15));
+
+        applyDiscountButton = new JButton("Áp dụng mã");
+        applyDiscountButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        applyDiscountButton.setBackground(Color.WHITE);
+        applyDiscountButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        applyDiscountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String discountCode = discountCodeTextField.getText().trim();
+                double originalPrice = booking.getTotalPrice();
+                
+                if (discountCode.equals("WELCOMENEWBIE")) {
+                    discountedPrice = originalPrice * 0.9; // Giảm 10%
+                    discountApplied = true;
+                    amountLabel.setText(String.format("%,.0f VNĐ", discountedPrice));
+                    JOptionPane.showMessageDialog(PaymentMethodDialog.this, 
+                        "Áp dụng mã giảm giá thành công! Giảm 10%", 
+                        "Thành công", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                } else if (discountCode.equals("VALENTINESDAY")) {
+                    discountedPrice = originalPrice * 0.8; // Giảm 20%
+                    discountApplied = true;
+                    amountLabel.setText(String.format("%,.0f VNĐ", discountedPrice));
+                    JOptionPane.showMessageDialog(PaymentMethodDialog.this, 
+                        "Áp dụng mã giảm giá thành công! Giảm 20%", 
+                        "Thành công", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(PaymentMethodDialog.this, 
+                        "Mã giảm giá không hợp lệ", 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+                    discountApplied = false;
+                    discountedPrice = originalPrice; // Reset về giá gốc
+                }
+            }
+        });
+        mainPanel.add(applyDiscountButton);
+
         mainPanel.add(Box.createVerticalStrut(20));
         
         // Buttons panel
@@ -196,6 +252,11 @@ public class PaymentMethodDialog extends JDialog {
                     selectedPaymentMethod = "VISA";
                 } else if (mastercardRadio.isSelected()) {
                     selectedPaymentMethod = "MASTERCARD";
+                }
+                
+                // Cập nhật giá đã giảm vào booking nếu đã áp dụng mã giảm giá
+                if (discountApplied) {
+                    booking.setTotalPrice(discountedPrice);
                 }
                 
                 paymentConfirmed = true;
