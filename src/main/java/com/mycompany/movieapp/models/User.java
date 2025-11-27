@@ -27,10 +27,8 @@ public abstract class User {
         this.status = AccountStatus.ACTIVE;
     }
 
-    // Abstract method - mỗi loại user có cách hiển thị dashboard khác nhau
     public abstract String getDashboardInfo();
 
-    // Business Methods
     public boolean login(String username, String password) {
         if (!isActive()) {
             System.out.println("Tài khoản không hoạt động!");
@@ -65,7 +63,6 @@ public abstract class User {
         return status == AccountStatus.ACTIVE;
     }
 
-    // Getters and Setters
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
 

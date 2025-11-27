@@ -18,25 +18,17 @@ import com.mycompany.movieapp.models.Booking;
 import com.mycompany.movieapp.services.BookingService;
 import com.mycompany.movieapp.services.UserService;
 
-/**
- *
- * @author taova
- */
 public class BookingPage extends javax.swing.JFrame {
     
     private Schedule schedule;
     private HomePage homePage;
-    private List<ShowSeat> selectedSeats; // Danh sách ghế đã chọn
-    private Customer currentCustomer; // Customer hiện tại (cần lấy từ login)
+    private List<ShowSeat> selectedSeats;
+    private Customer currentCustomer;
 
-    /**
-     * Creates new form BookingPage
-     */
     public BookingPage(Schedule schedule, HomePage homePage) {
         this.schedule = schedule;
         this.homePage = homePage;
         this.selectedSeats = new ArrayList<>();
-        // TODO: Lấy customer từ session/login - tạm thời lấy customer đầu tiên
         this.currentCustomer = (Customer) UserService.getAllUsers().stream()
                 .filter(u -> u instanceof Customer)
                 .findFirst()
@@ -46,14 +38,9 @@ public class BookingPage extends javax.swing.JFrame {
         updateSelectedSeatsDisplay();
     }
 
-    /**
-     * Display all seats with color coding: white = available, red = booked
-     */
     private void showingAvailableSeats() {
-        // Clear existing seats
         seatsPanel.removeAll();
         
-        // Get all seats from schedule
         List<ShowSeat> allSeats = schedule.getShowSeatInfo();
         
         if (allSeats.isEmpty()) {
@@ -62,7 +49,6 @@ public class BookingPage extends javax.swing.JFrame {
             noSeatsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             seatsPanel.add(noSeatsLabel);
         } else {
-            // Use GridLayout - adjust columns based on number of seats
             int columns = Math.min(10, allSeats.size());
             int rows = (int) Math.ceil((double) allSeats.size() / columns);
             seatsPanel.setLayout(new GridLayout(rows, columns, 5, 5));
@@ -77,11 +63,8 @@ public class BookingPage extends javax.swing.JFrame {
         seatsPanel.repaint();
     }
     
-    /**
-     * Create a seat label with appropriate color
-     */
     private javax.swing.JLabel createSeatLabel(ShowSeat showSeat) {
-        final ShowSeat seat = showSeat; // Make effectively final for use in inner class
+        final ShowSeat seat = showSeat;
         javax.swing.JLabel seatLabel = new javax.swing.JLabel(showSeat.getSeat().getSeatCode());
         seatLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         seatLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -94,19 +77,15 @@ public class BookingPage extends javax.swing.JFrame {
             seatLabel.setBackground(Color.WHITE);
             seatLabel.setForeground(Color.BLACK);
             
-            // Add click listener only for available seats
             seatLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (seat.isAvailable()) {
-                        // Toggle seat selection
                         if (selectedSeats.contains(seat)) {
-                            // Deselect - remove from list
                             selectedSeats.remove(seat);
                             seatLabel.setBackground(Color.WHITE);
                             seatLabel.setForeground(Color.BLACK);
                         } else {
-                            // Select - add to list
                             if (selectedSeats.size() >= 10) {
                                 JOptionPane.showMessageDialog(BookingPage.this, 
                                     "Chỉ được chọn tối đa 10 ghế!", 
@@ -115,7 +94,7 @@ public class BookingPage extends javax.swing.JFrame {
                                 return;
                             }
                             selectedSeats.add(seat);
-                            seatLabel.setBackground(new Color(0, 150, 255)); // Blue for selected
+                            seatLabel.setBackground(new Color(0, 150, 255));
                             seatLabel.setForeground(Color.WHITE);
                         }
                         updateSelectedSeatsDisplay();
@@ -145,9 +124,6 @@ public class BookingPage extends javax.swing.JFrame {
         return seatLabel;
     }
     
-    /**
-     * Update display of selected seats
-     */
     private void updateSelectedSeatsDisplay() {
         if (selectedSeatsLabel != null) {
             if (selectedSeats.isEmpty()) {
@@ -167,9 +143,6 @@ public class BookingPage extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Confirm booking and add seats to Booking
-     */
     private void confirmBooking() {
         if (currentCustomer == null) {
             JOptionPane.showMessageDialog(this, 
@@ -188,10 +161,8 @@ public class BookingPage extends javax.swing.JFrame {
         }
         
         try {
-            // Create booking using BookingService
             Booking booking = BookingService.createBooking(currentCustomer, schedule, selectedSeats);
             
-            // Confirm and process payment (tạm thời dùng CASH)
             boolean success = BookingService.confirmAndPayBooking(booking, "CASH");
             
             if (success) {
@@ -216,9 +187,6 @@ public class BookingPage extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Get selected seats as string
-     */
     private String getSelectedSeatsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < selectedSeats.size(); i++) {
@@ -228,11 +196,6 @@ public class BookingPage extends javax.swing.JFrame {
         return sb.toString();
     }
     
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -314,14 +277,10 @@ public class BookingPage extends javax.swing.JFrame {
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            // This is just for testing - in real usage, use the constructor with parameters
         });
     }
 

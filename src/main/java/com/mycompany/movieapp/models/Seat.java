@@ -27,7 +27,6 @@ public class Seat {
         return row + number;
     }
 
-    // Getters and Setters
     public int getSeatId() { return seatId; }
     public void setSeatId(int seatId) { this.seatId = seatId; }
 

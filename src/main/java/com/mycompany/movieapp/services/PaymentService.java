@@ -8,12 +8,6 @@ public class PaymentService {
     private static List<Payment> allPayments = new ArrayList<>();
     private static int paymentIdCounter = 1;
     
-    /**
-     * Process payment for a booking
-     * @param booking The booking to pay for
-     * @param paymentMethod The payment method (MOMO, VISA, MASTERCARD, CASH)
-     * @return true if payment successful, false otherwise
-     */
     public static boolean processPayment(Booking booking, String paymentMethod) {
         if (booking == null) {
             System.out.println("Booking không hợp lệ!");
@@ -40,14 +34,6 @@ public class PaymentService {
         return false;
     }
     
-    /**
-     * Process payment for a booking by booking ID
-     * @param customer The customer making the payment
-     * @param bookingId The booking ID
-     * @param paymentMethod The payment method
-     * @param amount The amount to pay
-     * @return true if payment successful, false otherwise
-     */
     public static boolean makePayment(Customer customer, int bookingId, String paymentMethod, double amount) {
         if (customer == null) {
             return false;
@@ -67,11 +53,6 @@ public class PaymentService {
         return processPayment(booking, paymentMethod);
     }
     
-    /**
-     * Refund a payment
-     * @param payment The payment to refund
-     * @return true if refund successful, false otherwise
-     */
     public static boolean refundPayment(Payment payment) {
         if (payment == null) {
             return false;
@@ -79,11 +60,6 @@ public class PaymentService {
         return payment.refund();
     }
     
-    /**
-     * Get payment by ID
-     * @param paymentId The payment ID
-     * @return The Payment object if found, null otherwise
-     */
     public static Payment getPaymentById(int paymentId) {
         return allPayments.stream()
                 .filter(p -> p.getPaymentId() == paymentId)
@@ -91,11 +67,6 @@ public class PaymentService {
                 .orElse(null);
     }
     
-    /**
-     * Get all payments for a customer
-     * @param customer The customer
-     * @return List of payments
-     */
     public static List<Payment> getPaymentsByCustomer(Customer customer) {
         if (customer == null) {
             return new ArrayList<>();
@@ -109,10 +80,6 @@ public class PaymentService {
         return customerPayments;
     }
     
-    /**
-     * Get all payments
-     * @return List of all payments
-     */
     public static List<Payment> getAllPayments() {
         return new ArrayList<>(allPayments);
     }

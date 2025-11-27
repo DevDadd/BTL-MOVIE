@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.movieapp.views;
 
 import com.mycompany.movieapp.models.Movie;
@@ -20,21 +16,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Trang quản lý lịch chiếu:
- * - Nhập ID phim để xem danh sách lịch chiếu hiện có
- * - Thêm mới lịch chiếu cho phim đã tồn tại
- * - Chọn 1 lịch để sửa hoặc xóa
- */
 public class AddSchedule extends javax.swing.JFrame {
 
     private static final Logger logger = Logger.getLogger(AddSchedule.class.getName());
 
-    // Định dạng thời gian nhập vào
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // UI components
     private JTextField movieIdField;
     private JButton loadSchedulesButton;
     private DefaultListModel<Schedule> scheduleListModel;
@@ -50,27 +38,19 @@ public class AddSchedule extends javax.swing.JFrame {
     private JButton deleteButton;
     private JButton closeButton;
 
-    // Data
     private List<Schedule> currentSchedules = new ArrayList<>();
     private List<Room> allRooms = new ArrayList<>();
 
-    /**
-     * Creates new form AddSchedule
-     */
     public AddSchedule() {
         initComponents();
         loadAllRooms();
     }
 
-    /**
-     * Khởi tạo UI cho trang quản lý lịch chiếu.
-     */
     @SuppressWarnings("unchecked")
     private void initComponents() {
         setTitle("Quản lý lịch chiếu");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        // ====== TOP: nhập movieId và nút load ======
         JLabel movieIdLabel = new JLabel("Movie ID:");
         movieIdField = new JTextField(10);
         loadSchedulesButton = new JButton("Tải lịch chiếu");
@@ -81,7 +61,6 @@ public class AddSchedule extends javax.swing.JFrame {
         topPanel.add(movieIdField);
         topPanel.add(loadSchedulesButton);
 
-        // ====== CENTER LEFT: danh sách schedule ======
         scheduleListModel = new DefaultListModel<>();
         scheduleList = new JList<>(scheduleListModel);
         scheduleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -93,7 +72,6 @@ public class AddSchedule extends javax.swing.JFrame {
         JScrollPane listScrollPane = new JScrollPane(scheduleList);
         listScrollPane.setBorder(BorderFactory.createTitledBorder("Các lịch chiếu của phim"));
 
-        // ====== CENTER RIGHT: form chi tiết schedule ======
         JLabel scheduleIdLabel = new JLabel("Schedule ID:");
         scheduleIdField = new JTextField(10);
         scheduleIdField.setEditable(false);
@@ -134,7 +112,6 @@ public class AddSchedule extends javax.swing.JFrame {
         gbc.gridx = 1;
         formPanel.add(endTimeField, gbc);
 
-        // ====== BOTTOM: các nút thao tác ======
         addButton = new JButton("Thêm lịch");
         addButton.addActionListener(e -> onAddSchedule());
 
@@ -153,7 +130,6 @@ public class AddSchedule extends javax.swing.JFrame {
         buttonPanel.add(deleteButton);
         buttonPanel.add(closeButton);
 
-        // ====== MAIN LAYOUT ======
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         centerPanel.add(listScrollPane);
         centerPanel.add(formPanel);
@@ -167,10 +143,6 @@ public class AddSchedule extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    /**
-     * Load danh sách tất cả phòng từ các schedule đang có,
-     * dùng cho combobox chọn phòng khi tạo/sửa lịch.
-     */
     private void loadAllRooms() {
         allRooms.clear();
         roomComboBox.removeAllItems();
@@ -187,9 +159,6 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Khi ấn nút "Tải lịch chiếu"
-     */
     private void onLoadSchedules() {
         Integer movieId = parseInteger(movieIdField.getText(), "Movie ID");
         if (movieId == null) {
@@ -223,9 +192,6 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Khi chọn 1 schedule bên trái, fill dữ liệu vào form để sửa/xóa.
-     */
     private void onScheduleSelected() {
         Schedule selected = scheduleList.getSelectedValue();
         if (selected == null) {
@@ -236,7 +202,6 @@ public class AddSchedule extends javax.swing.JFrame {
         startTimeField.setText(selected.getStartTime().format(DATE_TIME_FORMATTER));
         endTimeField.setText(selected.getEndTime().format(DATE_TIME_FORMATTER));
 
-        // chọn đúng room trong combobox
         Room scheduleRoom = selected.getRoom();
         if (scheduleRoom != null) {
             for (int i = 0; i < roomComboBox.getItemCount(); i++) {
@@ -249,9 +214,6 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Thêm lịch mới cho phim.
-     */
     private void onAddSchedule() {
         Integer movieId = parseInteger(movieIdField.getText(), "Movie ID");
         if (movieId == null) {
@@ -297,9 +259,6 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Cập nhật lịch chiếu đã chọn.
-     */
     private void onUpdateSchedule() {
         Integer scheduleId = parseInteger(scheduleIdField.getText(), "Schedule ID");
         if (scheduleId == null) {
@@ -354,9 +313,6 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Xóa lịch chiếu đã chọn.
-     */
     private void onDeleteSchedule() {
         Integer scheduleId = parseInteger(scheduleIdField.getText(), "Schedule ID");
         if (scheduleId == null) {
@@ -434,11 +390,7 @@ public class AddSchedule extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -451,7 +403,6 @@ public class AddSchedule extends javax.swing.JFrame {
             logger.log(Level.SEVERE, null, ex);
         }
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new AddSchedule().setVisible(true));
     }
 }

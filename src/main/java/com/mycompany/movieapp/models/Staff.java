@@ -31,7 +31,6 @@ public class Staff extends User {
                 role, hireDate);
     }
 
-    // Movie Management
     public boolean addMovie(Movie movie) {
         if (movie == null) return false;
         MovieService.addMovie(movie);
@@ -56,7 +55,6 @@ public class Staff extends User {
         return success;
     }
 
-    // Schedule Management
     public boolean addSchedule(Schedule schedule) {
         if (schedule == null) return false;
         if (!isValidSchedule(schedule)) {
@@ -88,7 +86,6 @@ public class Staff extends User {
         return true;
     }
 
-    // Room Management
     public boolean addRoom(Room room) {
         if (room == null) return false;
         logActivity("Thêm phòng: " + room.getName());
@@ -101,7 +98,6 @@ public class Staff extends User {
         return true;
     }
 
-    // Seat Management
     public boolean setSeat(Seat seat) {
         if (seat == null) return false;
         logActivity("Thêm ghế: " + seat.getSeatInfo());
@@ -114,7 +110,6 @@ public class Staff extends User {
         return true;
     }
 
-    // Utility
     private void logActivity(String activity) {
         String log = LocalDateTime.now() + " - " + username + ": " + activity;
         activityLog.add(log);
@@ -124,7 +119,6 @@ public class Staff extends User {
         return new ArrayList<>(activityLog);
     }
 
-    // Getters and Setters
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 

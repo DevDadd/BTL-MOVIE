@@ -9,7 +9,6 @@ public class MovieService {
     private static List<Movie> allMovies = new ArrayList<>();
     
     static {
-        // Initialize with some sample movies for testing
         allMovies.add(new Movie(1, "Avengers: Endgame", 
             "The epic conclusion to the Infinity Saga", "181 phút", 
             "Anthony Russo, Joe Russo", "Action", "Robert Downey Jr., Chris Evans", 
@@ -32,27 +31,16 @@ public class MovieService {
             LocalDate.now().plusDays(5).toString(), "PG-13", ""));
     }
     
-    /**
-     * Get all movies
-     * @return List of all movies
-     */
     public static List<Movie> getAllMovies() {
         return new ArrayList<>(allMovies);
     }
     
-    /**
-     * Add a new movie
-     * @param movie The movie to add
-     */
     public static void addMovie(Movie movie) {
         if (movie != null) {
             allMovies.add(movie);
         }
     }
 
-    /**
-     * Search movies by keyword
-     */
     public static List<Movie> searchMovies(String keyword) {
         return searchMovies(keyword, getAllMovies());
     }
@@ -73,9 +61,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Search movies by date
-     */
     public static List<Movie> searchMoviesByDate(java.time.LocalDate date) {
         return searchMoviesByDate(date, getAllMovies());
     }
@@ -93,9 +78,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get movies by genre
-     */
     public static List<Movie> getMoviesByGenre(String genre) {
         return getMoviesByGenre(genre, getAllMovies());
     }
@@ -110,9 +92,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get upcoming movies
-     */
     public static List<Movie> getUpcomingMovies() {
         return getUpcomingMovies(getAllMovies());
     }
@@ -129,9 +108,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Get movie by ID
-     */
     public static Movie getMovieById(int movieId) {
         return allMovies.stream()
                 .filter(m -> m.getMovieId() == movieId)
@@ -139,9 +115,6 @@ public class MovieService {
                 .orElse(null);
     }
     
-    /**
-     * Update a movie
-     */
     public static boolean updateMovie(int movieId, Movie updatedMovie) {
         if (updatedMovie == null) {
             return false;
@@ -152,7 +125,6 @@ public class MovieService {
             return false;
         }
         
-        // Update movie properties
         existingMovie.setTitle(updatedMovie.getTitle());
         existingMovie.setDescription(updatedMovie.getDescription());
         existingMovie.setDuration(updatedMovie.getDuration());
@@ -167,9 +139,6 @@ public class MovieService {
         return true;
     }
     
-    /**
-     * Delete/Deactivate a movie
-     */
     public static boolean deleteMovie(int movieId) {
         Movie movie = getMovieById(movieId);
         if (movie == null) {
@@ -185,10 +154,6 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Get now showing movies from all available movies
-     * @return List of movies currently showing
-     */
     public static List<Movie> getNowShowingMovies() {
         return getNowShowingMovies(getAllMovies());
     }

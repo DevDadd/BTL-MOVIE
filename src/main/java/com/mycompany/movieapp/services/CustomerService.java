@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class CustomerService {
     
-    /**
-     * Get booking history for a customer
-     */
     public static List<Booking> getBookingHistory(Customer customer) {
         if (customer == null) {
             return new ArrayList<>();
@@ -16,9 +13,6 @@ public class CustomerService {
         return BookingService.getBookingHistory(customer);
     }
     
-    /**
-     * Get a specific booking by ID for a customer
-     */
     public static Booking getBookingById(Customer customer, int bookingId) {
         if (customer == null) {
             return null;
@@ -26,9 +20,6 @@ public class CustomerService {
         return BookingService.getBookingById(customer, bookingId);
     }
     
-    /**
-     * Add booking to customer history and update loyalty points
-     */
     public static void addBookingToHistory(Customer customer, Booking booking) {
         if (customer == null || booking == null) {
             return;
@@ -37,16 +28,10 @@ public class CustomerService {
         customer.addBooking(booking);
     }
     
-    /**
-     * Calculate loyalty points from booking total price
-     */
     public static int calculateLoyaltyPoints(double totalPrice) {
         return (int)(totalPrice / 10000);
     }
     
-    /**
-     * Get loyalty discount for a customer
-     */
     public static int getLoyaltyDiscount(Customer customer) {
         if (customer == null) {
             return 0;
@@ -54,9 +39,6 @@ public class CustomerService {
         return customer.getLoyaltyDiscount();
     }
     
-    /**
-     * Check if customer can book
-     */
     public static boolean canBook(Customer customer) {
         if (customer == null) {
             return false;
@@ -64,9 +46,6 @@ public class CustomerService {
         return customer.canBook();
     }
     
-    /**
-     * Get customer loyalty points
-     */
     public static int getLoyaltyPoints(Customer customer) {
         if (customer == null) {
             return 0;

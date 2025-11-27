@@ -20,7 +20,6 @@ public class Notification {
         this.sent = false;
     }
 
-    // Business Methods
     public boolean sendEmail(Customer customer) {
         if (customer == null || customer.getEmail() == null) {
             return false;
@@ -67,7 +66,6 @@ public class Notification {
         return true;
     }
 
-    // Getters and Setters
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
 

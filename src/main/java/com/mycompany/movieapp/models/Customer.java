@@ -28,7 +28,6 @@ public class Customer extends User {
                 bookingHistory.size(), loyaltyPoints);
     }
 
-    // Movie Search
     public List<Movie> searchMovie(String keyword, List<Movie> allMovies) {
         String lowerKeyword = keyword.toLowerCase();
         return allMovies.stream()
@@ -48,7 +47,6 @@ public class Customer extends User {
                 .collect(Collectors.toList());
     }
 
-    // Schedule
     public List<Schedule> viewSchedules(int movieId, List<Schedule> allSchedules) {
         return allSchedules.stream()
                 .filter(s -> s.getMovie().getMovieId() == movieId)
@@ -56,7 +54,6 @@ public class Customer extends User {
                 .collect(Collectors.toList());
     }
 
-    // Booking
     public List<Booking> viewBookingHistory() {
         return new ArrayList<>(bookingHistory);
     }
@@ -75,7 +72,6 @@ public class Customer extends User {
                 .orElse(null);
     }
 
-    // Payment
     public boolean makePayment(int bookingId, String paymentMethod, double amount) {
         Booking booking = viewBooking(bookingId);
         if (booking == null) {
@@ -105,7 +101,6 @@ public class Customer extends User {
         return Math.min(discount, 20);
     }
 
-    // Getters and Setters
     public List<Booking> getBookingHistory() { return bookingHistory; }
     public void setBookingHistory(List<Booking> bookingHistory) { this.bookingHistory = bookingHistory; }
 

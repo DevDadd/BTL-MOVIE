@@ -77,7 +77,6 @@ public class Schedule {
                 .count();
     }
 
-    // Getters and Setters
     public int getScheduleId() { return scheduleId; }
     public void setScheduleId(int scheduleId) { this.scheduleId = scheduleId; }
 

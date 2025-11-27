@@ -10,25 +10,21 @@ public class ScheduleService {
     private static int scheduleIdCounter = 1;
     
     static {
-        // Initialize with sample schedules
         initializeSampleSchedules();
     }
     
     private static void initializeSampleSchedules() {
-        // Get movies from MovieService
         List<Movie> movies = MovieService.getAllMovies();
         if (movies.isEmpty()) {
             return;
         }
         
-        // Create sample theater and rooms
         Theater theater = new Theater(1, "CGV Vincom", "123 Nguyễn Huệ, Q1, TP.HCM", "1900 6017");
         
         Room room1 = new Room(1, "Phòng VIP", 50, "R001", theater);
         Room room2 = new Room(2, "Phòng Standard", 100, "R002", theater);
         Room room3 = new Room(3, "Phòng IMAX", 200, "R003", theater);
         
-        // Create sample seats for rooms (simplified - just a few seats for demo)
         com.mycompany.movieapp.enums.SeatType regularType = com.mycompany.movieapp.enums.SeatType.REGULAR;
         com.mycompany.movieapp.enums.SeatType vipType = com.mycompany.movieapp.enums.SeatType.VIP;
         
@@ -38,10 +34,8 @@ public class ScheduleService {
             room3.addSeat(new Seat(i, "C", i, regularType, room3));
         }
         
-        // Create schedules for movies
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
         
-        // Schedules for movie 1 (Avengers: Endgame)
         if (movies.size() > 0) {
             Movie movie1 = movies.get(0);
             allSchedules.add(new Schedule(generateScheduleId(), movie1, room1, 
@@ -53,7 +47,6 @@ public class ScheduleService {
                 now.plusDays(1).withHour(17).withMinute(0)));
         }
         
-        // Schedules for movie 2 (Spider-Man)
         if (movies.size() > 1) {
             Movie movie2 = movies.get(1);
             allSchedules.add(new Schedule(generateScheduleId(), movie2, room1, 
@@ -63,7 +56,6 @@ public class ScheduleService {
                 now.plusDays(1).withHour(12).withMinute(30)));
         }
         
-        // Schedules for movie 3 (Dune)
         if (movies.size() > 2) {
             Movie movie3 = movies.get(2);
             allSchedules.add(new Schedule(generateScheduleId(), movie3, room2, 
@@ -73,7 +65,6 @@ public class ScheduleService {
                 now.plusDays(1).withHour(20).withMinute(35)));
         }
         
-        // Schedules for movie 4 (Matrix)
         if (movies.size() > 3) {
             Movie movie4 = movies.get(3);
             allSchedules.add(new Schedule(generateScheduleId(), movie4, room1, 
@@ -84,9 +75,6 @@ public class ScheduleService {
         }
     }
     
-    /**
-     * Get schedules by movie
-     */
     public static List<Schedule> getSchedulesByMovie(Movie movie) {
         return getSchedulesByMovie(movie, allSchedules);
     }
@@ -102,9 +90,6 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Get schedules by movie ID (for customer view)
-     */
     public static List<Schedule> viewSchedules(int movieId) {
         return allSchedules.stream()
                 .filter(s -> s.getMovie().getMovieId() == movieId)
@@ -113,9 +98,6 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get schedules by date
-     */
     public static List<Schedule> getSchedulesByDate(java.time.LocalDate date) {
         return getSchedulesByDate(date, allSchedules);
     }
@@ -131,9 +113,6 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get schedules by room
-     */
     public static List<Schedule> getSchedulesByRoom(Room room) {
         return getSchedulesByRoom(room, allSchedules);
     }
@@ -148,9 +127,6 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Check if room is available for a time slot
-     */
     public static boolean isRoomAvailable(Room room, LocalDateTime startTime, LocalDateTime endTime) {
         return isRoomAvailable(room, startTime, endTime, allSchedules);
     }
@@ -165,9 +141,6 @@ public class ScheduleService {
                 .noneMatch(s -> isTimeOverlap(s.getStartTime(), s.getEndTime(), startTime, endTime));
     }
     
-    /**
-     * Validate schedule
-     */
     private static boolean isValidSchedule(Schedule schedule) {
         if (schedule == null) {
             return false;
@@ -186,9 +159,6 @@ public class ScheduleService {
         return !end1.isBefore(start2) && !start1.isAfter(end2);
     }
     
-    /**
-     * Add a new schedule
-     */
     public static boolean addSchedule(Schedule schedule) {
         if (schedule == null) {
             return false;
@@ -199,7 +169,6 @@ public class ScheduleService {
             return false;
         }
         
-        // Check room availability
         if (!isRoomAvailable(schedule.getRoom(), schedule.getStartTime(), schedule.getEndTime())) {
             System.out.println("Phòng không khả dụng trong khoảng thời gian này!");
             return false;
@@ -210,9 +179,6 @@ public class ScheduleService {
         return true;
     }
     
-    /**
-     * Update a schedule
-     */
     public static boolean updateSchedule(int scheduleId, Schedule updatedSchedule) {
         if (updatedSchedule == null) {
             return false;
@@ -223,7 +189,6 @@ public class ScheduleService {
             return false;
         }
         
-        // Check room availability if time changed
         if (!existingSchedule.getStartTime().equals(updatedSchedule.getStartTime()) ||
             !existingSchedule.getEndTime().equals(updatedSchedule.getEndTime()) ||
             !existingSchedule.getRoom().equals(updatedSchedule.getRoom())) {
@@ -241,7 +206,6 @@ public class ScheduleService {
             return false;
         }
         
-        // Update schedule properties
         existingSchedule.setMovie(updatedSchedule.getMovie());
         existingSchedule.setRoom(updatedSchedule.getRoom());
         existingSchedule.setStartTime(updatedSchedule.getStartTime());
@@ -250,9 +214,6 @@ public class ScheduleService {
         return true;
     }
     
-    /**
-     * Delete a schedule
-     */
     public static boolean deleteSchedule(int scheduleId) {
         Schedule schedule = getScheduleById(scheduleId);
         if (schedule == null) {
@@ -261,9 +222,6 @@ public class ScheduleService {
         return allSchedules.remove(schedule);
     }
     
-    /**
-     * Get schedule by ID
-     */
     public static Schedule getScheduleById(int scheduleId) {
         return allSchedules.stream()
                 .filter(s -> s.getScheduleId() == scheduleId)
@@ -271,9 +229,6 @@ public class ScheduleService {
                 .orElse(null);
     }
     
-    /**
-     * Get all schedules
-     */
     public static List<Schedule> getAllSchedules() {
         return new ArrayList<>(allSchedules);
     }

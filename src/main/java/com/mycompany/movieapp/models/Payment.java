@@ -27,7 +27,6 @@ public class Payment {
         this.status = PaymentStatus.PENDING;
     }
 
-    // Business Methods
     public boolean processPayment() {
         try {
             if (booking == null) {
@@ -157,7 +156,6 @@ public class Payment {
                 paymentId, method, amount, status.getDisplayName());
     }
 
-    // Getters and Setters
     public int getPaymentId() { return paymentId; }
     public void setPaymentId(int paymentId) { this.paymentId = paymentId; }
 

@@ -45,7 +45,6 @@ public class Theater {
                 .sum();
     }
 
-    // Getters and Setters
     public int getTheaterId() { return theaterId; }
     public void setTheaterId(int theaterId) { this.theaterId = theaterId; }
 

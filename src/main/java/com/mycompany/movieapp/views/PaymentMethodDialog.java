@@ -21,17 +21,13 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-/**
- *
- * @author taova
- */
 public class PaymentMethodDialog extends JDialog {
     
     private Booking booking;
     private String selectedPaymentMethod;
     private boolean paymentConfirmed;
-    private double discountedPrice; // Lưu giá đã giảm (nếu có)
-    private boolean discountApplied; // Đánh dấu đã áp dụng mã giảm giá
+    private double discountedPrice;
+    private boolean discountApplied;
     
     private JLabel titleLabel;
     private JLabel amountLabel;
@@ -45,9 +41,6 @@ public class PaymentMethodDialog extends JDialog {
     private JButton applyDiscountButton;
     private ButtonGroup paymentMethodGroup;
     
-    /**
-     * Creates new form PaymentMethodDialog
-     */
     public PaymentMethodDialog(java.awt.Frame parent, Booking booking) {
         super(parent, true);
         if (booking == null) {
@@ -56,23 +49,15 @@ public class PaymentMethodDialog extends JDialog {
         this.booking = booking;
         this.paymentConfirmed = false;
         this.selectedPaymentMethod = null;
-        this.discountedPrice = booking.getTotalPrice(); // Mặc định bằng giá gốc
+        this.discountedPrice = booking.getTotalPrice();
         this.discountApplied = false;
         initComponents();
     }
     
-    /**
-     * Get the selected payment method
-     * @return The selected payment method or null if cancelled
-     */
     public String getSelectedPaymentMethod() {
         return selectedPaymentMethod;
     }
     
-    /**
-     * Check if payment was confirmed
-     * @return true if confirmed, false otherwise
-     */
     public boolean isPaymentConfirmed() {
         return paymentConfirmed;
     }
@@ -89,14 +74,12 @@ public class PaymentMethodDialog extends JDialog {
         mainPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
         mainPanel.setBackground(Color.WHITE);
         
-        // Title
         titleLabel = new JLabel("CHỌN PHƯƠNG THỨC THANH TOÁN");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         titleLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
         mainPanel.add(titleLabel);
         
-        // Amount display
         JPanel amountPanel = new JPanel();
         amountPanel.setLayout(new BoxLayout(amountPanel, BoxLayout.Y_AXIS));
         amountPanel.setBackground(Color.WHITE);
@@ -124,7 +107,6 @@ public class PaymentMethodDialog extends JDialog {
         mainPanel.add(amountPanel);
         mainPanel.add(Box.createVerticalStrut(20));
         
-        // Payment methods
         JLabel methodLabel = new JLabel("Phương thức thanh toán:");
         methodLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         methodLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -135,16 +117,14 @@ public class PaymentMethodDialog extends JDialog {
         
         paymentMethodGroup = new ButtonGroup();
         
-        // Cash option
         cashRadio = new JRadioButton("Tiền mặt (Thanh toán tại quầy)");
         cashRadio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         cashRadio.setBackground(Color.WHITE);
-        cashRadio.setSelected(true); // Default selection
+        cashRadio.setSelected(true);
         cashRadio.setAlignmentX(JRadioButton.CENTER_ALIGNMENT);
         paymentMethodGroup.add(cashRadio);
         mainPanel.add(cashRadio);
         
-        // MoMo option
         momoRadio = new JRadioButton("Ví điện tử MoMo");
         momoRadio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         momoRadio.setBackground(Color.WHITE);
@@ -152,7 +132,6 @@ public class PaymentMethodDialog extends JDialog {
         paymentMethodGroup.add(momoRadio);
         mainPanel.add(momoRadio);
         
-        // Visa option
         visaRadio = new JRadioButton("Thẻ Visa");
         visaRadio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         visaRadio.setBackground(Color.WHITE);
@@ -160,7 +139,6 @@ public class PaymentMethodDialog extends JDialog {
         paymentMethodGroup.add(visaRadio);
         mainPanel.add(visaRadio);
         
-        // Mastercard option
         mastercardRadio = new JRadioButton("Thẻ Mastercard");
         mastercardRadio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         mastercardRadio.setBackground(Color.WHITE);
@@ -189,7 +167,7 @@ public class PaymentMethodDialog extends JDialog {
                 double originalPrice = booking.getTotalPrice();
                 
                 if (discountCode.equals("WELCOMENEWBIE")) {
-                    discountedPrice = originalPrice * 0.9; // Giảm 10%
+                    discountedPrice = originalPrice * 0.9;
                     discountApplied = true;
                     amountLabel.setText(String.format("%,.0f VNĐ", discountedPrice));
                     JOptionPane.showMessageDialog(PaymentMethodDialog.this, 
@@ -197,7 +175,7 @@ public class PaymentMethodDialog extends JDialog {
                         "Thành công", 
                         JOptionPane.INFORMATION_MESSAGE);
                 } else if (discountCode.equals("VALENTINESDAY")) {
-                    discountedPrice = originalPrice * 0.8; // Giảm 20%
+                    discountedPrice = originalPrice * 0.8;
                     discountApplied = true;
                     amountLabel.setText(String.format("%,.0f VNĐ", discountedPrice));
                     JOptionPane.showMessageDialog(PaymentMethodDialog.this, 
@@ -210,7 +188,7 @@ public class PaymentMethodDialog extends JDialog {
                         "Lỗi", 
                         JOptionPane.ERROR_MESSAGE);
                     discountApplied = false;
-                    discountedPrice = originalPrice; // Reset về giá gốc
+                    discountedPrice = originalPrice;
                 }
             }
         });
@@ -218,7 +196,6 @@ public class PaymentMethodDialog extends JDialog {
 
         mainPanel.add(Box.createVerticalStrut(20));
         
-        // Buttons panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.setBackground(Color.WHITE);
@@ -254,7 +231,6 @@ public class PaymentMethodDialog extends JDialog {
                     selectedPaymentMethod = "MASTERCARD";
                 }
                 
-                // Cập nhật giá đã giảm vào booking nếu đã áp dụng mã giảm giá
                 if (discountApplied) {
                     booking.setTotalPrice(discountedPrice);
                 }
@@ -276,12 +252,8 @@ public class PaymentMethodDialog extends JDialog {
         pack();
     }
     
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            // For testing only
             PaymentMethodDialog dialog = new PaymentMethodDialog(new javax.swing.JFrame(), null);
             dialog.setVisible(true);
         });

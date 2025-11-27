@@ -49,7 +49,6 @@ public class Room {
         return seats.size() >= capacity;
     }
 
-    // Getters and Setters
     public int getRoomId() { return roomId; }
     public void setRoomId(int roomId) { this.roomId = roomId; }
 

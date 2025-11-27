@@ -33,7 +33,6 @@ public class Booking {
         this.seatList = new ArrayList<>();
     }
 
-    // Business Methods
     public boolean addSeat(ShowSeat showSeat) throws SeatNotAvailableException {
         if (showSeat == null) {
             return false;
@@ -149,7 +148,6 @@ public class Booking {
         return info.toString();
     }
 
-    // Getters and Setters
     public int getBookingId() { return bookingId; }
     public void setBookingId(int bookingId) { this.bookingId = bookingId; }
 
