@@ -86,9 +86,9 @@ public class BookingPage extends javax.swing.JFrame {
                             seatLabel.setBackground(Color.WHITE);
                             seatLabel.setForeground(Color.BLACK);
                         } else {
-                            if (selectedSeats.size() >= 10) {
+                            if (selectedSeats.size() >= 60) {
                                 JOptionPane.showMessageDialog(BookingPage.this, 
-                                    "Chỉ được chọn tối đa 10 ghế!", 
+                                    "Chỉ được chọn tối đa 60 ghế!", 
                                     "Thông báo", 
                                     JOptionPane.WARNING_MESSAGE);
                                 return;
@@ -167,7 +167,7 @@ public class BookingPage extends javax.swing.JFrame {
             
             if (success) {
                 JOptionPane.showMessageDialog(this, 
-                    "Đặt chỗ thành công!\nMã booking: " + booking.getBookingId() + 
+                    "Đặt chỗ thành công hãy ra trang chủ phần vé của tôi để thanh toán!\nMã booking: " + booking.getBookingId() + 
                     "\nGhế: " + getSelectedSeatsString() +
                     "\nTổng tiền: " + String.format("%,.0f VNĐ", booking.getTotalPrice()), 
                     "Thành công", 
@@ -204,7 +204,6 @@ public class BookingPage extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         seatsPanel = new javax.swing.JPanel();
         infoPanel = new javax.swing.JPanel();
-        legendLabel = new javax.swing.JLabel();
         selectedSeatsLabel = new javax.swing.JLabel();
         confirmButton = new javax.swing.JButton();
 
@@ -221,14 +220,6 @@ public class BookingPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(seatsPanel);
 
         infoPanel.setLayout(new java.awt.BorderLayout());
-
-        legendLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        legendLabel.setText("<html><div style='text-align: center;'>"
-                + "<span style='background-color: white; color: black; padding: 5px; border: 1px solid gray;'>Trống</span> "
-                + "<span style='background-color: blue; color: white; padding: 5px; border: 1px solid gray; margin-left: 10px;'>Đã chọn</span> "
-                + "<span style='background-color: red; color: white; padding: 5px; border: 1px solid gray; margin-left: 10px;'>Đã đặt</span>"
-                + "</div></html>");
-        legendLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         
         selectedSeatsLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         selectedSeatsLabel.setText("Chưa chọn ghế nào");
@@ -244,11 +235,7 @@ public class BookingPage extends javax.swing.JFrame {
         });
         
         infoPanel.setLayout(new java.awt.BorderLayout());
-        javax.swing.JPanel topPanel = new javax.swing.JPanel();
-        topPanel.setLayout(new java.awt.BorderLayout());
-        topPanel.add(legendLabel, java.awt.BorderLayout.CENTER);
-        topPanel.add(selectedSeatsLabel, java.awt.BorderLayout.SOUTH);
-        infoPanel.add(topPanel, java.awt.BorderLayout.CENTER);
+        infoPanel.add(selectedSeatsLabel, java.awt.BorderLayout.CENTER);
         infoPanel.add(confirmButton, java.awt.BorderLayout.SOUTH);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -288,7 +275,6 @@ public class BookingPage extends javax.swing.JFrame {
     private javax.swing.JButton confirmButton;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel legendLabel;
     private javax.swing.JPanel seatsPanel;
     private javax.swing.JLabel selectedSeatsLabel;
     private javax.swing.JLabel titleLabel;

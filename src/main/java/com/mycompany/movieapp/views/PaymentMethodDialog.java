@@ -65,7 +65,7 @@ public class PaymentMethodDialog extends JDialog {
     private void initComponents() {
         setTitle("Chọn phương thức thanh toán");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(500, 450));
+        setPreferredSize(new Dimension(600, 650));
         setResizable(false);
         setLocationRelativeTo(getParent());
         

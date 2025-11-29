@@ -28,9 +28,9 @@ public class Signup extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("SIGNUP");
+        jLabel1.setText("Đăng ký");
 
-        jLabel2.setText("Account:");
+        jLabel2.setText("Tên đăng nhập:");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -38,7 +38,7 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Password:");
+        jLabel3.setText("Mật khẩu:");
 
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -46,9 +46,9 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Password:");
+        jLabel4.setText("Nhập lại mật khẩu:");
 
-        jButton1.setText("SIGNUP");
+        jButton1.setText("Đăng ký");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

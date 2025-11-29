@@ -1,5 +1,6 @@
 package com.mycompany.movieapp.views;
 
+import com.mycompany.movieapp.enums.BookingStatus;
 import com.mycompany.movieapp.models.Booking;
 import com.mycompany.movieapp.models.Customer;
 import com.mycompany.movieapp.services.BookingService;
@@ -113,6 +114,10 @@ public class BookingHistoryPage extends javax.swing.JFrame {
         javax.swing.JButton payButton = new javax.swing.JButton("Thanh toán");
         payButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         payButton.setPreferredSize(new Dimension(120, 40));
+        if(booking.getStatus().equals(BookingStatus.PAID)) {
+            payButton.setEnabled(false);
+            payButton.setText("Đã thanh toán");
+        }
         
         panel.add(infoPanel, BorderLayout.CENTER);
         panel.add(payButton, BorderLayout.EAST);
