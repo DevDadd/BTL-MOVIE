@@ -11,12 +11,6 @@ public class Staff extends User {
     private LocalDate hireDate;
     private List<String> activityLog;
 
-    public Staff() {
-        super();
-        this.activityLog = new ArrayList<>();
-        this.hireDate = LocalDate.now();
-    }
-
     public Staff(int userId, String username, String password, String email,
                  String phoneNumber, String address, String role) {
         super(userId, username, password, email, phoneNumber, address);
@@ -27,15 +21,18 @@ public class Staff extends User {
 
     @Override
     public String getDashboardInfo() {
-        return String.format("STAFF DASHBOARD\nChức vụ: %s\nNgày vào làm: %s\nQuyền hạn: Quản lý phim, lịch chiếu, phòng",
+        return String.format("STAFF DASHBOARD\nChức vụ: %s\nNgày vào làm: %s",
                 role, hireDate);
     }
 
+
     public boolean addMovie(Movie movie) {
         if (movie == null) return false;
-        MovieService.addMovie(movie);
-        logActivity("Thêm phim: " + movie.getTitle());
-        return true;
+        boolean success = MovieService.addMovie(movie);
+        if (success) {
+            logActivity("Thêm phim: " + movie.getTitle());
+        }
+        return success;
     }
 
     public boolean updateMovie(int movieId, Movie updatedMovie) {
@@ -54,6 +51,7 @@ public class Staff extends User {
         }
         return success;
     }
+
 
     public boolean addSchedule(Schedule schedule) {
         if (schedule == null) return false;
@@ -86,29 +84,7 @@ public class Staff extends User {
         return true;
     }
 
-    public boolean addRoom(Room room) {
-        if (room == null) return false;
-        logActivity("Thêm phòng: " + room.getName());
-        return true;
-    }
 
-    public boolean updateRoom(int roomId, Room updatedRoom) {
-        if (updatedRoom == null) return false;
-        logActivity("Cập nhật phòng ID: " + roomId);
-        return true;
-    }
-
-    public boolean setSeat(Seat seat) {
-        if (seat == null) return false;
-        logActivity("Thêm ghế: " + seat.getSeatInfo());
-        return true;
-    }
-
-    public boolean updateSeat(int seatId, Seat updatedSeat) {
-        if (updatedSeat == null) return false;
-        logActivity("Cập nhật ghế ID: " + seatId);
-        return true;
-    }
 
     private void logActivity(String activity) {
         String log = LocalDateTime.now() + " - " + username + ": " + activity;
@@ -118,6 +94,7 @@ public class Staff extends User {
     public List<String> getActivityLog() {
         return new ArrayList<>(activityLog);
     }
+
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }

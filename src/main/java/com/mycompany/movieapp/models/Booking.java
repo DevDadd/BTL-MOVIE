@@ -135,7 +135,6 @@ public class Booking {
         info.append("Mã booking: ").append(bookingId).append("\n");
         info.append("Khách hàng: ").append(customer.getUsername()).append("\n");
         info.append("Phim: ").append(schedule.getMovie().getTitle()).append("\n");
-        info.append("Phòng: ").append(schedule.getRoom().getRoomNumber()).append("\n");
         info.append("Suất chiếu: ").append(schedule.getStartTime()).append("\n");
         info.append("Ghế đã chọn: ");
         for (ShowSeat seat : seatList) {

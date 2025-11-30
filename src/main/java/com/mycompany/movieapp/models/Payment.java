@@ -13,13 +13,7 @@ public class Payment {
     private PaymentStatus status;
     private String transactionId;
 
-    public Payment() {
-        this.time = LocalDateTime.now();
-        this.status = PaymentStatus.PENDING;
-    }
-
-    public Payment(int paymentId, Booking booking, String method, double amount) {
-        this.paymentId = paymentId;
+    public Payment(Booking booking, String method, double amount) {
         this.booking = booking;
         this.method = method;
         this.amount = amount;
@@ -34,7 +28,7 @@ public class Payment {
             }
 
             if (amount != booking.getTotalPrice()) {
-                throw new PaymentException("Số tiền không khớp với tổng giá booking!");
+                throw new PaymentException("Số tiền không khớp!");
             }
 
             if (!isValidPaymentMethod()) {
@@ -55,14 +49,14 @@ public class Payment {
                     paymentSuccess = processCash();
                     break;
                 default:
-                    throw new PaymentException("Phương thức thanh toán không được hỗ trợ!");
+                    throw new PaymentException("Phương thức không hỗ trợ!");
             }
 
             if (paymentSuccess) {
                 this.status = PaymentStatus.CONFIRMED;
                 this.transactionId = generateTransactionId();
                 booking.setStatus(com.mycompany.movieapp.enums.BookingStatus.CONFIRMED);
-                sendReceipt();
+                sendNotification();
                 return true;
             } else {
                 this.status = PaymentStatus.CANCELED;
@@ -70,24 +64,24 @@ public class Payment {
             }
 
         } catch (PaymentException e) {
-            System.out.println("Lỗi thanh toán: " + e.getMessage());
+            System.out.println("Lỗi: " + e.getMessage());
             this.status = PaymentStatus.CANCELED;
             return false;
         }
     }
 
     private boolean processMoMo() {
-        System.out.println("Đang xử lý thanh toán MoMo...");
+        System.out.println("Đang xử lý MoMo...");
         return true;
     }
 
     private boolean processCreditCard() {
-        System.out.println("Đang xử lý thanh toán thẻ...");
+        System.out.println("Đang xử lý thẻ...");
         return true;
     }
 
     private boolean processCash() {
-        System.out.println("Thanh toán tiền mặt tại quầy");
+        System.out.println("Thanh toán tiền mặt");
         return true;
     }
 
@@ -102,35 +96,16 @@ public class Payment {
     }
 
     private String generateTransactionId() {
-        return "TXN" + System.currentTimeMillis() + (int)(Math.random() * 1000);
+        return "TXN" + System.currentTimeMillis();
     }
 
-    public boolean sendReceipt() {
-        if (status != PaymentStatus.CONFIRMED) {
-            return false;
-        }
 
-        String receipt = generateReceipt();
-
+    private void sendNotification() {
         Notification notification = new Notification(
-                "Thanh toán thành công!\n" + receipt,
+                "Thanh toán thành công! Mã GD: " + transactionId,
                 LocalDateTime.now()
         );
-
-        return notification.sendEmail(booking.getCustomer());
-    }
-
-    private String generateReceipt() {
-        StringBuilder receipt = new StringBuilder();
-        receipt.append("========== HÓA ĐƠN THANH TOÁN ==========\n");
-        receipt.append("Mã giao dịch: ").append(transactionId).append("\n");
-        receipt.append("Thời gian: ").append(time).append("\n");
-        receipt.append("Phương thức: ").append(method).append("\n");
-        receipt.append("Số tiền: ").append(String.format("%,.0f VNĐ", amount)).append("\n");
-        receipt.append("\n");
-        receipt.append(booking.getBookingInfo());
-        receipt.append("========================================\n");
-        return receipt.toString();
+        notification.sendEmail(booking.getCustomer());
     }
 
     public boolean refund() {
@@ -138,12 +113,11 @@ public class Payment {
             return false;
         }
 
-        System.out.println("Đang xử lý hoàn tiền " + String.format("%,.0f VNĐ", amount));
-
+        System.out.println("Hoàn tiền: " + String.format("%,.2f VNĐ", amount));
         this.status = PaymentStatus.REFUNDED;
 
         Notification notification = new Notification(
-                "Đã hoàn tiền " + String.format("%,.0f VNĐ", amount) + " cho booking #" + booking.getBookingId(),
+                "Đã hoàn tiền " + String.format("%,.2f VNĐ", amount),
                 LocalDateTime.now()
         );
         notification.sendEmail(booking.getCustomer());
@@ -151,31 +125,16 @@ public class Payment {
         return true;
     }
 
-    public String getPaymentInfo() {
-        return String.format("Payment #%d - %s - %,.0f VNĐ - %s",
-                paymentId, method, amount, status.getDisplayName());
-    }
 
     public int getPaymentId() { return paymentId; }
     public void setPaymentId(int paymentId) { this.paymentId = paymentId; }
 
     public Booking getBooking() { return booking; }
-    public void setBooking(Booking booking) { this.booking = booking; }
-
     public String getMethod() { return method; }
-    public void setMethod(String method) { this.method = method; }
-
     public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
-
     public LocalDateTime getTime() { return time; }
-    public void setTime(LocalDateTime time) { this.time = time; }
-
     public PaymentStatus getStatus() { return status; }
-    public void setStatus(PaymentStatus status) { this.status = status; }
-
     public String getTransactionId() { return transactionId; }
-    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
 
     @Override
     public String toString() {

@@ -2,22 +2,19 @@ package com.mycompany.movieapp.models;
 
 public class ShowSeat {
     private String status;
-    private int price;
+    private double price;
     private Schedule schedule;
     private Seat seat;
 
-    public ShowSeat() {
-        this.status = "Available";
-    }
 
-    public ShowSeat(String status, int price, Schedule schedule, Seat seat) {
-        this.status = status;
-        this.price = price;
+    public ShowSeat(Schedule schedule, Seat seat, double price) {
         this.schedule = schedule;
         this.seat = seat;
+        this.price = price;
+        this.status = "Available"; // Mặc định Available khi tạo
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -38,14 +35,15 @@ public class ShowSeat {
     }
 
     public String getSeatInfo() {
-        return String.format("%s - %s - %,d VNĐ",
+        return String.format("%s - %s - %,.2f VNĐ",
                 seat.getSeatCode(), seat.getType().getDisplayName(), price);
     }
+
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public void setPrice(int price) { this.price = price; }
+    public void setPrice(double price) { this.price = price; }
 
     public Schedule getSchedule() { return schedule; }
     public void setSchedule(Schedule schedule) { this.schedule = schedule; }

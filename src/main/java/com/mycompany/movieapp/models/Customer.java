@@ -1,6 +1,6 @@
 package com.mycompany.movieapp.models;
 
-import java.time.LocalDate;
+import com.mycompany.movieapp.services.MovieService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,12 +8,6 @@ import java.util.stream.Collectors;
 public class Customer extends User {
     private List<Booking> bookingHistory;
     private int loyaltyPoints;
-
-    public Customer() {
-        super();
-        this.bookingHistory = new ArrayList<>();
-        this.loyaltyPoints = 0;
-    }
 
     public Customer(int userId, String username, String password, String email,
                     String phoneNumber, String address) {
@@ -28,31 +22,19 @@ public class Customer extends User {
                 bookingHistory.size(), loyaltyPoints);
     }
 
+    // XÓA searchMovie() - GỌI THẲNG MovieService
     public List<Movie> searchMovie(String keyword, List<Movie> allMovies) {
-        String lowerKeyword = keyword.toLowerCase();
-        return allMovies.stream()
-                .filter(m -> m.getTitle().toLowerCase().contains(lowerKeyword) ||
-                        m.getGenre().toLowerCase().contains(lowerKeyword) ||
-                        m.getActor().toLowerCase().contains(lowerKeyword))
-                .collect(Collectors.toList());
+        return MovieService.searchMovies(keyword, allMovies);
     }
 
-    public List<Movie> searchMovieByDate(java.time.LocalDate date, List<Movie> allMovies) {
-        return allMovies.stream()
-                .filter(m -> {
-                    LocalDate release = m.getReleaseDateAsDate();
-                    return release != null && !release.isAfter(date);
-                })
-                .filter(Movie::isActive)
-                .collect(Collectors.toList());
-    }
-
+    // Schedule
     public List<Schedule> viewSchedules(int movieId, List<Schedule> allSchedules) {
         return allSchedules.stream()
                 .filter(s -> s.getMovie().getMovieId() == movieId)
                 .filter(Schedule::isAvailableForBooking)
                 .collect(Collectors.toList());
     }
+
 
     public List<Booking> viewBookingHistory() {
         return new ArrayList<>(bookingHistory);
@@ -72,6 +54,7 @@ public class Customer extends User {
                 .orElse(null);
     }
 
+
     public boolean makePayment(int bookingId, String paymentMethod, double amount) {
         Booking booking = viewBooking(bookingId);
         if (booking == null) {
@@ -84,11 +67,7 @@ public class Customer extends User {
             return false;
         }
 
-        Payment payment = new Payment();
-        payment.setBooking(booking);
-        payment.setMethod(paymentMethod);
-        payment.setAmount(amount);
-
+        Payment payment = new Payment(booking, paymentMethod, amount);
         return payment.processPayment();
     }
 
@@ -100,6 +79,7 @@ public class Customer extends User {
         int discount = loyaltyPoints / 100;
         return Math.min(discount, 20);
     }
+
 
     public List<Booking> getBookingHistory() { return bookingHistory; }
     public void setBookingHistory(List<Booking> bookingHistory) { this.bookingHistory = bookingHistory; }

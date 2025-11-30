@@ -9,7 +9,6 @@ public class Seat {
     private SeatType type;
     private Room room;
 
-    public Seat() {}
 
     public Seat(int seatId, String row, int number, SeatType type, Room room) {
         this.seatId = seatId;
@@ -26,6 +25,7 @@ public class Seat {
     public String getSeatCode() {
         return row + number;
     }
+
 
     public int getSeatId() { return seatId; }
     public void setSeatId(int seatId) { this.seatId = seatId; }

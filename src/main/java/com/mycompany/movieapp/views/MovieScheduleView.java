@@ -94,13 +94,11 @@ public class MovieScheduleView extends javax.swing.JDialog {
         javax.swing.JPanel roomPanel = new javax.swing.JPanel();
         roomPanel.setLayout(new BoxLayout(roomPanel, BoxLayout.Y_AXIS));
         roomPanel.setBackground(Color.WHITE);
-        
+
+
         String roomName = schedule.getRoom() != null ? schedule.getRoom().getName() : "N/A";
-        String roomNumber = schedule.getRoom() != null ? 
-            (schedule.getRoom().getRoomNumber() != null ? schedule.getRoom().getRoomNumber() : "") : "";
-        
-        javax.swing.JLabel roomLabel = new javax.swing.JLabel("Phòng: " + roomName + 
-            (roomNumber.isEmpty() ? "" : " (" + roomNumber + ")"));
+
+        javax.swing.JLabel roomLabel = new javax.swing.JLabel("Phòng: " + roomName);
         roomLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         roomLabel.setForeground(new Color(100, 100, 100));
         roomPanel.add(roomLabel);

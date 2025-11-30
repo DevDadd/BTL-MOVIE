@@ -1,5 +1,6 @@
 package com.mycompany.movieapp.views;
 
+import com.mycompany.movieapp.Movieapp;
 import com.mycompany.movieapp.services.MovieService;
 import com.mycompany.movieapp.services.UserService;
 import com.mycompany.movieapp.models.Movie;
@@ -35,7 +36,9 @@ public class HomePage extends javax.swing.JFrame {
     }
     
     private void loadNowShowingMovies() {
-        List<Movie> nowShowingMovies = MovieService.getNowShowingMovies();
+
+        List<Movie> allMovies = Movieapp.getMovies();
+        List<Movie> nowShowingMovies = MovieService.getNowShowingMovies(allMovies);
         
         jPanelMoviesContainer.removeAll();
         

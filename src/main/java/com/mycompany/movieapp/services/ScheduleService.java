@@ -21,9 +21,9 @@ public class ScheduleService {
         
         Theater theater = new Theater(1, "CGV Vincom", "123 Nguyễn Huệ, Q1, TP.HCM", "1900 6017");
         
-        Room room1 = new Room(1, "Phòng VIP", 50, "R001", theater);
-        Room room2 = new Room(2, "Phòng Standard", 100, "R002", theater);
-        Room room3 = new Room(3, "Phòng IMAX", 200, "R003", theater);
+        Room room1 = new Room(1, "Phòng VIP",100);
+        Room room2 = new Room(2, "Phòng Standard", 100);
+        Room room3 = new Room(3, "Phòng IMAX", 200);
         
         com.mycompany.movieapp.enums.SeatType regularType = com.mycompany.movieapp.enums.SeatType.REGULAR;
         com.mycompany.movieapp.enums.SeatType vipType = com.mycompany.movieapp.enums.SeatType.VIP;

@@ -18,13 +18,11 @@ public class PaymentService {
             System.out.println("Số tiền không hợp lệ!");
             return false;
         }
-        
-        Payment payment = new Payment();
-        payment.setPaymentId(generatePaymentId());
-        payment.setBooking(booking);
-        payment.setMethod(paymentMethod);
-        payment.setAmount(booking.getTotalPrice());
-        
+
+        Payment payment = new Payment(booking, paymentMethod, booking.getTotalPrice());
+
+
+
         if (payment.processPayment()) {
             booking.setPayment(payment);
             allPayments.add(payment);

@@ -1,7 +1,7 @@
 package com.mycompany.movieapp.models;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +13,7 @@ public class Movie {
     private String director;
     private String genre;
     private String actor;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private String rating;
     private String posterUrl;
     private boolean isActive;
@@ -23,7 +23,7 @@ public class Movie {
     }
 
     public Movie(int movieId, String title, String description, String duration,
-                 String director, String genre, String actor, String releaseDate,
+                 String director, String genre, String actor, LocalDate releaseDate,
                  String rating, String posterUrl) {
         this.movieId = movieId;
         this.title = title;
@@ -54,13 +54,11 @@ public class Movie {
     }
 
     public boolean isShowingToday() {
-        LocalDate release = parseReleaseDate();
-        return release != null && this.isActive && !release.isAfter(LocalDate.now());
+        return this.isActive && !this.releaseDate.isAfter(LocalDate.now());
     }
 
-    public LocalDate getReleaseDateAsDate() {
-        return parseReleaseDate();
-    }
+
+
 
     public int getMovieId() { return movieId; }
     public void setMovieId(int movieId) { this.movieId = movieId; }
@@ -83,8 +81,8 @@ public class Movie {
     public String getActor() { return actor; }
     public void setActor(String actor) { this.actor = actor; }
 
-    public String getReleaseDate() { return releaseDate; }
-    public void setReleaseDate(String releaseDate) { this.releaseDate = releaseDate; }
+    public LocalDate getReleaseDate() { return releaseDate; }
+    public void setReleaseDate(LocalDate releaseDate) { this.releaseDate = releaseDate; }
 
     public String getRating() { return rating; }
     public void setRating(String rating) { this.rating = rating; }
@@ -98,16 +96,5 @@ public class Movie {
     @Override
     public String toString() {
         return title + " (" + rating + ")";
-    }
-
-    private LocalDate parseReleaseDate() {
-        if (releaseDate == null || releaseDate.isBlank()) {
-            return null;
-        }
-        try {
-            return LocalDate.parse(releaseDate.trim());
-        } catch (DateTimeParseException ex) {
-            return null;
-        }
     }
 }

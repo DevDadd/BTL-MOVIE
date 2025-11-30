@@ -14,10 +14,6 @@ public class Schedule {
     private LocalDateTime endTime;
     private List<ShowSeat> showSeats;
 
-    public Schedule() {
-        this.showSeats = new ArrayList<>();
-    }
-
     public Schedule(int scheduleId, Movie movie, Room room,
                     LocalDateTime startTime, LocalDateTime endTime) {
         this.scheduleId = scheduleId;
@@ -32,11 +28,12 @@ public class Schedule {
     private void initializeShowSeats() {
         if (room != null) {
             for (Seat seat : room.getSeats()) {
-                ShowSeat showSeat = new ShowSeat();
-                showSeat.setSeat(seat);
-                showSeat.setSchedule(this);
-                showSeat.setStatus("Available");
-                showSeat.setPrice(seat.getType().getBasePrice());
+
+                ShowSeat showSeat = new ShowSeat(
+                        this,
+                        seat,
+                        seat.getType().getBasePrice()
+                );
                 showSeats.add(showSeat);
             }
         }
@@ -44,7 +41,7 @@ public class Schedule {
 
     public List<ShowSeat> getAvailableSeats() {
         return showSeats.stream()
-                .filter(ss -> "Available".equals(ss.getStatus()))
+                .filter(ShowSeat::isAvailable)
                 .collect(Collectors.toList());
     }
 
@@ -66,16 +63,16 @@ public class Schedule {
 
     public String getScheduleInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        return String.format("%s - %s\nPhòng: %s\nThời gian: %s",
-                movie.getTitle(), room.getName(), room.getRoomNumber(),
-                startTime.format(formatter));
+        return String.format("%s - %s\nThời gian: %s",
+                movie.getTitle(), room.getName(), startTime.format(formatter));
     }
 
     public int getAvailableSeatsCount() {
         return (int) showSeats.stream()
-                .filter(ss -> "Available".equals(ss.getStatus()))
+                .filter(ShowSeat::isAvailable)
                 .count();
     }
+
 
     public int getScheduleId() { return scheduleId; }
     public void setScheduleId(int scheduleId) { this.scheduleId = scheduleId; }
