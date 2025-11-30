@@ -20,18 +20,37 @@ public class ScheduleService {
         }
         
         Theater theater = new Theater(1, "CGV Vincom", "123 Nguyễn Huệ, Q1, TP.HCM", "1900 6017");
-        
+
+
         Room room1 = new Room(1, "Phòng VIP",100);
         Room room2 = new Room(2, "Phòng Standard", 100);
         Room room3 = new Room(3, "Phòng IMAX", 200);
+
         
         com.mycompany.movieapp.enums.SeatType regularType = com.mycompany.movieapp.enums.SeatType.REGULAR;
         com.mycompany.movieapp.enums.SeatType vipType = com.mycompany.movieapp.enums.SeatType.VIP;
         
-        for (int i = 1; i <= 10; i++) {
-            room1.addSeat(new Seat(i, "A", i, vipType, room1));
-            room2.addSeat(new Seat(i, "B", i, regularType, room2));
-            room3.addSeat(new Seat(i, "C", i, regularType, room3));
+        String[] rows = {"A", "B", "C", "D", "E", "F"};
+        int seatIdCounter = 1;
+        
+        for (String row : rows) {
+            for (int number = 1; number <= 10; number++) {
+                room1.addSeat(new Seat(seatIdCounter++, row, number, vipType, room1));
+            }
+        }
+        
+        seatIdCounter = 1;
+        for (String row : rows) {
+            for (int number = 1; number <= 10; number++) {
+                room2.addSeat(new Seat(seatIdCounter++, row, number, regularType, room2));
+            }
+        }
+        
+        seatIdCounter = 1;
+        for (String row : rows) {
+            for (int number = 1; number <= 10; number++) {
+                room3.addSeat(new Seat(seatIdCounter++, row, number, regularType, room3));
+            }
         }
         
         java.time.LocalDateTime now = java.time.LocalDateTime.now();

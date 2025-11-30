@@ -108,7 +108,7 @@ public class MovieScheduleView extends javax.swing.JDialog {
             availableSeats + " ghế trống"
         );
         seatsLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        if (availableSeats > 10) {
+        if (availableSeats >= 60) {
             seatsLabel.setForeground(new Color(0, 150, 0));
         } else if (availableSeats > 0) {
             seatsLabel.setForeground(new Color(255, 140, 0));
