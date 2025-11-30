@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.util.stream.Collectors;
 
 public class MovieScheduleView extends javax.swing.JDialog {
     
@@ -32,12 +33,22 @@ public class MovieScheduleView extends javax.swing.JDialog {
 
 
     private void loadSchedules() {
-        List<Schedule> schedules = ScheduleService.viewSchedules(movie.getMovieId());
-        
+
+        List<Schedule> allSchedules = com.mycompany.movieapp.utils.DataLoader.getSchedules();
+
+
+        List<Schedule> schedules = allSchedules.stream()
+                .filter(s -> s.getMovie().getMovieId() == movie.getMovieId())
+                .filter(s -> s.getStartTime().isAfter(java.time.LocalDateTime.now()))
+                .collect(java.util.stream.Collectors.toList());
+
+
+        System.out.println("Schedule cho phim " + movie.getTitle() + ": " + schedules.size());
+
         titleLabel.setText("Lịch chiếu của: " + movie.getTitle());
-        
+
         schedulesPanel.removeAll();
-        
+
         if (schedules.isEmpty()) {
             javax.swing.JLabel noScheduleLabel = new javax.swing.JLabel("Không có lịch chiếu nào cho phim này.");
             noScheduleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -47,14 +58,14 @@ public class MovieScheduleView extends javax.swing.JDialog {
         } else {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            
+
             for (Schedule schedule : schedules) {
                 javax.swing.JPanel schedulePanel = createSchedulePanel(schedule, dateFormatter, timeFormatter);
                 schedulesPanel.add(schedulePanel);
                 schedulesPanel.add(javax.swing.Box.createVerticalStrut(10));
             }
         }
-        
+
         schedulesPanel.revalidate();
         schedulesPanel.repaint();
     }

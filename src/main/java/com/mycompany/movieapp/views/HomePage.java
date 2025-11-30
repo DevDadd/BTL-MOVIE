@@ -31,17 +31,26 @@ public class HomePage extends javax.swing.JFrame {
     public HomePage(User currentUser) {
         this.currentUser = currentUser;
         initComponents();
+
+        if (com.mycompany.movieapp.utils.DataLoader.getMovies().isEmpty()) {
+            com.mycompany.movieapp.utils.DataLoader.loadDemoData();
+        }
+
         configureAdminAccess();
         loadNowShowingMovies();
     }
-    
-    private void loadNowShowingMovies() {
 
-        List<Movie> allMovies = Movieapp.getMovies();
+    private void loadNowShowingMovies() {
+        // ✅ Đổi từ Movieapp.getMovies() sang DataLoader.getMovies()
+        List<Movie> allMovies = com.mycompany.movieapp.utils.DataLoader.getMovies();
         List<Movie> nowShowingMovies = MovieService.getNowShowingMovies(allMovies);
-        
+
+        // Debug
+        System.out.println("Tổng phim: " + allMovies.size());
+        System.out.println("Đang chiếu: " + nowShowingMovies.size());
+
         jPanelMoviesContainer.removeAll();
-        
+
         if (nowShowingMovies.isEmpty()) {
             javax.swing.JLabel noMoviesLabel = new javax.swing.JLabel("Không có phim nào đang chiếu.");
             noMoviesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -54,7 +63,7 @@ public class HomePage extends javax.swing.JFrame {
                 jPanelMoviesContainer.add(javax.swing.Box.createVerticalStrut(15));
             }
         }
-        
+
         jPanelMoviesContainer.revalidate();
         jPanelMoviesContainer.repaint();
     }

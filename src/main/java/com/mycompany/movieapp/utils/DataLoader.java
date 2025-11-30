@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
-
 public class DataLoader {
 
     private static List<Movie> movies = new ArrayList<>();
@@ -15,9 +13,6 @@ public class DataLoader {
     private static List<Schedule> schedules = new ArrayList<>();
     private static List<Customer> customers = new ArrayList<>();
     private static List<Staff> staffs = new ArrayList<>();
-
-
-
 
     public static void loadDemoData() {
         System.out.println("Đang tải dữ liệu demo...\n");
@@ -35,32 +30,42 @@ public class DataLoader {
 
     private static void loadMovies() {
         movies.add(new Movie(1, "Avengers: Endgame",
-                "Cuộc chiến cuối cùng",
+                "Cuộc chiến cuối cùng của các siêu anh hùng",
                 "181 phút", "Anthony Russo", "Hành động",
-                "Robert Downey Jr.", LocalDate.of(2024, 1, 15),
+                "Robert Downey Jr.", LocalDate.now().minusDays(7),
                 "C13", "https://example.com/endgame.jpg"));
 
         movies.add(new Movie(2, "The Godfather",
-                "Câu chuyện mafia",
+                "Câu chuyện về gia đình mafia",
                 "175 phút", "Francis Ford Coppola", "Drama",
-                "Marlon Brando", LocalDate.of(2024, 2, 1),
+                "Marlon Brando", LocalDate.now().minusDays(30),
                 "C18", "https://example.com/godfather.jpg"));
+
+        movies.add(new Movie(3, "Inception",
+                "Bộ phim về giấc mơ",
+                "148 phút", "Christopher Nolan", "Sci-Fi",
+                "Leonardo DiCaprio", LocalDate.now().minusDays(14),
+                "C16", "https://example.com/inception.jpg"));
+
+        movies.add(new Movie(4, "Dune: Part Two",
+                "Hành trình trả thù",
+                "166 phút", "Denis Villeneuve", "Sci-Fi",
+                "Timothée Chalamet", LocalDate.now().plusDays(7),
+                "C13", "https://example.com/dune2.jpg"));
     }
 
     private static void loadTheaters() {
         Theater cgv = new Theater(1, "CGV Vincom", "191 Bà Triệu, HN", "1900-6017");
 
-
         Room room1 = new Room(1, "P01", 80);
 
-
-        String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H"};
+        String[] rows = {"A", "B", "C", "D", "E", "F"};
         int seatId = 1;
 
         for (String row : rows) {
             for (int num = 1; num <= 10; num++) {
                 SeatType type = SeatType.REGULAR;
-                if (row.equals("G") || row.equals("H")) {
+                if (row.equals("E") || row.equals("F")) {
                     type = SeatType.VIP;
                 }
                 room1.addSeat(new Seat(seatId++, row, num, type, room1));
@@ -72,17 +77,30 @@ public class DataLoader {
     }
 
     private static void loadSchedules() {
+        if (movies.isEmpty() || theaters.isEmpty()) return;
+
         LocalDateTime now = LocalDateTime.now();
-        Movie movie = movies.get(0);
         Room room = theaters.get(0).getRooms().get(0);
+        int scheduleId = 1;
 
-        schedules.add(new Schedule(1, movie, room,
-                now.plusDays(1).withHour(14).withMinute(0),
-                now.plusDays(1).withHour(17).withMinute(0)));
 
-        schedules.add(new Schedule(2, movie, room,
-                now.plusDays(1).withHour(19).withMinute(30),
-                now.plusDays(1).withHour(22).withMinute(30)));
+        for (Movie movie : movies) {
+
+            schedules.add(new Schedule(scheduleId++, movie, room,
+                    now.plusDays(1).withHour(14).withMinute(0),
+                    now.plusDays(1).withHour(17).withMinute(0)));
+
+            schedules.add(new Schedule(scheduleId++, movie, room,
+                    now.plusDays(1).withHour(19).withMinute(30),
+                    now.plusDays(1).withHour(22).withMinute(30)));
+
+
+            schedules.add(new Schedule(scheduleId++, movie, room,
+                    now.plusDays(2).withHour(15).withMinute(0),
+                    now.plusDays(2).withHour(18).withMinute(0)));
+        }
+
+        System.out.println("✓ Đã tạo " + schedules.size() + " lịch chiếu");
     }
 
     private static void loadUsers() {
@@ -91,10 +109,12 @@ public class DataLoader {
         customer.setLoyaltyPoints(500);
         customers.add(customer);
 
+        customers.add(new Customer(2, "jane_smith", "123456",
+                "jane@example.com", "0907654321", "TP.HCM"));
+
         staffs.add(new Staff(101, "admin", "admin123",
                 "admin@cinema.com", "0909999999", "Hà Nội", "Manager"));
     }
-
 
     public static List<Movie> getMovies() { return movies; }
     public static List<Theater> getTheaters() { return theaters; }
