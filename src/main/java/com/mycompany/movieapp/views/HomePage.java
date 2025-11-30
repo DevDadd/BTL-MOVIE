@@ -41,11 +41,9 @@ public class HomePage extends javax.swing.JFrame {
     }
 
     private void loadNowShowingMovies() {
-        // ✅ Đổi từ Movieapp.getMovies() sang DataLoader.getMovies()
         List<Movie> allMovies = com.mycompany.movieapp.utils.DataLoader.getMovies();
         List<Movie> nowShowingMovies = MovieService.getNowShowingMovies(allMovies);
 
-        // Debug
         System.out.println("Tổng phim: " + allMovies.size());
         System.out.println("Đang chiếu: " + nowShowingMovies.size());
 

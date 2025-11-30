@@ -22,12 +22,10 @@ public class Customer extends User {
                 bookingHistory.size(), loyaltyPoints);
     }
 
-    // XÓA searchMovie() - GỌI THẲNG MovieService
     public List<Movie> searchMovie(String keyword, List<Movie> allMovies) {
         return MovieService.searchMovies(keyword, allMovies);
     }
 
-    // Schedule
     public List<Schedule> viewSchedules(int movieId, List<Schedule> allSchedules) {
         return allSchedules.stream()
                 .filter(s -> s.getMovie().getMovieId() == movieId)

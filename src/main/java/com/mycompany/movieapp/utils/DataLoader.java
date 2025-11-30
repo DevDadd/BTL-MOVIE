@@ -34,25 +34,25 @@ public class DataLoader {
                 "Cuộc chiến cuối cùng của các siêu anh hùng",
                 "181 phút", "Anthony Russo", "Hành động",
                 "Robert Downey Jr.", LocalDate.now().minusDays(7),
-                "C13", "https://example.com/endgame.jpg"));
+                "C13", " "));
 
         movies.add(new Movie(2, "The Godfather",
                 "Câu chuyện về gia đình mafia",
                 "175 phút", "Francis Ford Coppola", "Drama",
                 "Marlon Brando", LocalDate.now().minusDays(30),
-                "C18", "https://example.com/godfather.jpg"));
+                "C18", " "));
 
         movies.add(new Movie(3, "Inception",
                 "Bộ phim về giấc mơ",
                 "148 phút", "Christopher Nolan", "Sci-Fi",
                 "Leonardo DiCaprio", LocalDate.now().minusDays(14),
-                "C16", "https://example.com/inception.jpg"));
+                "C16", " "));
 
         movies.add(new Movie(4, "Dune: Part Two",
                 "Hành trình trả thù",
                 "166 phút", "Denis Villeneuve", "Sci-Fi",
                 "Timothée Chalamet", LocalDate.now().plusDays(7),
-                "C13", "https://example.com/dune2.jpg"));
+                "C13", " "));
     }
 
     private static void loadTheaters() {
@@ -94,7 +94,6 @@ public class DataLoader {
     }
 
     private static void loadUsers() {
-        // Customers
         Customer c1 = new Customer(1, "john_doe", "123456",
                 "john@example.com", "0901234567", "Hà Nội");
         c1.setLoyaltyPoints(500);
@@ -103,7 +102,6 @@ public class DataLoader {
         customers.add(new Customer(2, "jane_smith", "123456",
                 "jane@example.com", "0907654321", "TP.HCM"));
 
-        // Staffs
         staffs.add(new Staff(101, "admin", "admin123",
                 "admin@cinema.com", "0909999999", "Hà Nội", "Admin"));
     }

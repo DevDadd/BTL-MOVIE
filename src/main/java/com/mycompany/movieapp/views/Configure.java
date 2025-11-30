@@ -278,13 +278,11 @@ public class Configure extends javax.swing.JFrame {
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        // Validate movie ID
         Integer movieId = parseMovieId(jTextField8.getText(), "thêm phim");
         if (movieId == null) {
             return;
         }
 
-        // Get form data
         String name = jTextField7.getText().trim();
         String description = jTextField2.getText().trim();
         String duration = jTextField3.getText().trim();
@@ -295,7 +293,6 @@ public class Configure extends javax.swing.JFrame {
         String rating = jTextField9.getText().trim();
         String posterUrl = jTextField10.getText().trim();
 
-        // Validate required fields
         if (name.isEmpty() || duration.isEmpty() || director.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Vui lòng điền đầy đủ: Tên phim, Thời lượng, Đạo diễn",
@@ -304,10 +301,9 @@ public class Configure extends javax.swing.JFrame {
             return;
         }
 
-        // Parse release date: String -> LocalDate
         LocalDate releaseDate;
         if (releaseDateInput.isEmpty()) {
-            releaseDate = LocalDate.now();  // Mặc định là ngày hiện tại
+            releaseDate = LocalDate.now();
         } else {
             if (!isValidIsoDate(releaseDateInput)) {
                 JOptionPane.showMessageDialog(this,
@@ -341,7 +337,6 @@ public class Configure extends javax.swing.JFrame {
                 posterUrl
         );
 
-        // Add movie
         boolean success = MovieService.addMovie(movie);
         if (success) {
             JOptionPane.showMessageDialog(this, "Phim đã được thêm thành công");

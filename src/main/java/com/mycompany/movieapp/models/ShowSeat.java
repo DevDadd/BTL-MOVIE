@@ -11,7 +11,7 @@ public class ShowSeat {
         this.schedule = schedule;
         this.seat = seat;
         this.price = price;
-        this.status = "Available"; // Mặc định Available khi tạo
+        this.status = "Available";
     }
 
     public double getPrice() {
