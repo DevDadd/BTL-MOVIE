@@ -1,20 +1,20 @@
 package com.mycompany.movieapp.services;
 
 import com.mycompany.movieapp.models.*;
+import com.mycompany.movieapp.utils.DataLoader;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MovieService {
 
-    private static List<Movie> movies = new ArrayList<>();
-
     public static boolean addMovie(Movie movie) {
         if (movie == null) return false;
-        movies.add(movie);
-        return true;
+        return DataLoader.getMovies().add(movie);
     }
 
     public static boolean updateMovie(int movieId, Movie updatedMovie) {
+        List<Movie> movies = DataLoader.getMovies();
+
         for (int i = 0; i < movies.size(); i++) {
             if (movies.get(i).getMovieId() == movieId) {
                 movies.set(i, updatedMovie);
@@ -25,16 +25,16 @@ public class MovieService {
     }
 
     public static boolean deleteMovie(int movieId) {
-        return movies.removeIf(m -> m.getMovieId() == movieId);
+        return DataLoader.getMovies()
+                .removeIf(m -> m.getMovieId() == movieId);
     }
 
     public static List<Movie> getAllMovies() {
-        return new ArrayList<>(movies);
+        return new ArrayList<>(DataLoader.getMovies());
     }
 
-    // ✅ Khôi phục lại method bạn cần
     public static Movie getMovieById(int movieId) {
-        return movies.stream()
+        return DataLoader.getMovies().stream()
                 .filter(m -> m.getMovieId() == movieId)
                 .findFirst()
                 .orElse(null);

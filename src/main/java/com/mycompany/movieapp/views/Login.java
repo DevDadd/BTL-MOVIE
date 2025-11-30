@@ -1,172 +1,118 @@
 package com.mycompany.movieapp.views;
-import javax.swing.JFrame; 
-import javax.swing.SwingUtilities;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 import com.mycompany.movieapp.services.UserService;
 import com.mycompany.movieapp.models.User;
 
-public class Login extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
+public class Login extends JFrame {
 
     public Login() {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
+        jLabel1 = new JLabel("Đăng nhập");
+        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel2 = new JLabel("Tên đăng nhập: ");
+        jLabel3 = new JLabel("Mật khẩu:");
+        jTextField1 = new JTextField();
+        jPasswordField1 = new JPasswordField();
+        jButtonLogin = new JButton("Đăng nhập");
+        signupButton = new JButton("Đăng ký");
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton2 = new javax.swing.JButton();
-        signupButton = new javax.swing.JButton();
+        jButtonLogin.addActionListener(evt -> loginAction());
+        signupButton.addActionListener(evt -> signupAction());
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Đăng nhập");
-
-        jLabel2.setText("Tên đăng nhập: ");
-
-        jLabel3.setText("Mật khẩu:");
-
-        jPasswordField1.setText("");
-
-        jButton2.setText("Đăng nhập");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        signupButton.setText("Đăng ký");
-        signupButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signupButtonActionPerformed(evt);
-                Login.this.dispose();
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(125, 125, 125))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(211, 211, 211)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signupButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(50)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1, GroupLayout.Alignment.CENTER)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(jLabel3))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jPasswordField1, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(50, Short.MAX_VALUE))
+                        .addGroup(GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                                .addComponent(jButtonLogin)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(signupButton)
+                        )
         );
+
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(signupButton))
-                .addContainerGap(18, Short.MAX_VALUE))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(20)
+                                .addComponent(jLabel1)
+                                .addGap(20)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addGap(10)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jPasswordField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addGap(20)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButtonLogin)
+                                        .addComponent(signupButton))
+                                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void loginAction() {
         String username = jTextField1.getText().trim();
         String password = new String(jPasswordField1.getPassword());
-        
+
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Hãy nhập đầy đủ tên và mật khẩu", 
-                "Lỗi đăng nhập", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ tên và mật khẩu", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        User authenticatedUser = UserService.authenticate(username, password);
-        
-        if (authenticatedUser != null) {
-            JOptionPane.showMessageDialog(this, 
-                "Đăng nhập thành công! Chào mừng, " + authenticatedUser.getUsername() + ".", 
-                "Thành công", 
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            UserService.setCurrentUser(authenticatedUser);
-            HomePage homeFrame = new HomePage(authenticatedUser); 
-            homeFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-            homeFrame.setLocationRelativeTo(null); 
-            homeFrame.setVisible(true);
-            
+
+        User user = UserService.authenticate(username, password);
+        if (user != null) {
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công! Chào mừng, " + user.getUsername(), "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            UserService.setCurrentUser(user);
+
+            HomePage home = new HomePage(user);
+            home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            home.setVisible(true);
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, 
-                "Tên đăng nhập hoặc mật khẩu không hợp lệ. Vui lòng thử lại.", 
-                "Lỗi đăng nhập", 
-                JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không hợp lệ.", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
             jPasswordField1.setText("");
         }
     }
 
-    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        Signup signupFrame = new Signup();
-        signupFrame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        signupFrame.setLocationRelativeTo(null);
-        signupFrame.setVisible(true);
-    }                                        
-
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
+    private void signupAction() {
+        Signup signup = new Signup();
+        signup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        signup.setVisible(true);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton signupButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+    public static void main(String[] args) {
+
+        com.mycompany.movieapp.utils.DataLoader.loadDemoData();
+
+        SwingUtilities.invokeLater(() -> new Login().setVisible(true));
+    }
+
+    private JButton jButtonLogin;
+    private JButton signupButton;
+    private JLabel jLabel1, jLabel2, jLabel3;
+    private JTextField jTextField1;
+    private JPasswordField jPasswordField1;
 }
