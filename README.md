@@ -10,22 +10,22 @@ Xuất phát từ thực tế đó, đề tài "**Xây dựng ứng dụng quả
 
 ## 2. Các chức năng chính
 
-### 🎥 Quản lý Phim ( movie ) 
-- Hiển thị( show ) danh sách phim theo thể loại.
-- Xem thông tin chi tiết: tên ( title ) , đạo diễn ( director ), diễn viên ( actor/actress ) , mô tả ( description ).
+### 🎥 Quản lý Phim
+- Hiển thị danh sách phim theo thể loại.
+- Xem thông tin chi tiết: tên, đạo diễn, diễn viên, mô tả.
 
-### 👤 Quản lý Tài khoản ( user )
-- Đăng ký và đăng nhập tài khoản. ( sign_up , login ).
-- Thông tin tài khoản khi đăng ký gồm: tên ( name ) , số điện thoại / email ( phone number / email ), mật khẩu ( password ).
+### 👤 Quản lý Tài khoản
+- Đăng ký và đăng nhập tài khoản.
+- Thông tin tài khoản khi đăng ký gồm: tên, số điện thoại / email, mật khẩu.
 - Lưu thông tin cá nhân và lịch sử mua vé.
 
-### 🎟️ Quản lý Vé ( ticket ) 
-- Hiển thị giờ chiếu ( showtime ), số ghế còn trống ( blank_space ).
+### 🎟️ Quản lý Vé 
+- Hiển thị giờ chiếu, số ghế còn trống.
 
 ### 💬 Tương tác Người dùng
-- Đặt/hủy vé.( booking / cancel ).
-- Thanh Toán ( payment )  
-- tra cứu vé đã đặt.( look_up_history)
+- Đặt/hủy vé.
+- Thanh toán.
+- Tra cứu vé đã đặt.
 ---
 
 ## 3. Bảng phân công công việc
