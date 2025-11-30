@@ -1,12 +1,10 @@
 # 🎬 Ứng dụng Bán Vé Xem Phim
 
 ## 1. Lý do chọn đề tài
-Trong bối cảnh công nghệ thông tin phát triển mạnh mẽ, nhu cầu mua sắm trực tuyến ngày càng tăng cao. Việc tìm kiếm và mua vé xem phim nhanh chóng, tiện lợi đã trở thành thói quen của nhiều người. Nhóm chúng em quyết định chọn đề tài **Ứng dụng bán vé xem phim** vì:
+Trong kỷ nguyên số, **nhu cầu giải trí và trải nghiệm dịch vụ** của khách hàng ngày càng cao, đòi hỏi các rạp chiếu phim phải liên tục đổi mới và tối ưu hóa quy trình vận hành. Tuy nhiên, phương pháp quản lý thủ công truyền thống hiện bộc lộ nhiều hạn chế lớn như: **dễ xảy ra sai sót** trong nghiệp vụ đặt vé và xếp chỗ, khó khăn trong việc **sắp xếp lịch chiếu** sao cho không trùng lặp, cũng như thiếu sự chặt chẽ trong kiểm soát doanh thu.
 
-- **Tính ứng dụng thực tế**: Giúp người dùng dễ dàng tìm và đặt vé xem phim yêu thích.
-- **Dễ phát triển mở rộng**: Có thể bổ sung các tính năng như gợi ý phim, tương tác xã hội, hoặc truyền hình trực tuyến.
-- **Cơ hội học hỏi**: Rèn luyện kỹ năng phân tích yêu cầu, thiết kế OOP, và lập trình ứng dụng thực tế.
-- **Sở thích cá nhân**: Cả nhóm đều yêu thích phim ảnh và công nghệ, tạo động lực để phát triển dự án.
+Xuất phát từ thực tế đó, đề tài "**Xây dựng ứng dụng quản lý rạp chiếu phim**" được lựa chọn nhằm mục đích **tự động hóa toàn bộ quy trình quản lý**, giúp nâng cao hiệu suất hoạt động và trải nghiệm người dùng. Đồng thời, đây là cơ hội thực tiễn để vận dụng các kiến thức chuyên sâu về ngôn ngữ lập trình Java, thư viện giao diện Swing và tư duy Lập trình hướng đối tượng (OOP) vào việc giải quyết một bài toán cụ thể.
+
 
 ---
 
@@ -14,17 +12,15 @@ Trong bối cảnh công nghệ thông tin phát triển mạnh mẽ, nhu cầu 
 
 ### 🎥 Quản lý Phim ( movie ) 
 - Hiển thị( show ) danh sách phim theo thể loại.
-- Tìm kiếm ( finding ) phim theo tên( title) , thể loại( genre ), năm sản xuất ( produce_year ).
 - Xem thông tin chi tiết: tên ( title ) , đạo diễn ( director ), diễn viên ( actor/actress ) , mô tả ( description ).
 
 ### 👤 Quản lý Tài khoản ( user )
 - Đăng ký và đăng nhập tài khoản. ( sign_up , login ).
 - Thông tin tài khoản khi đăng ký gồm: tên ( name ) , số điện thoại / email ( phone number / email ), mật khẩu ( password ).
-- Điều kiện mật khẩu: ít nhất 8 ký tự ( at least 8 character ), ít nhất 1 ký tụ viết hoa và 1 ký tự đặc biệt. ( at least 1 uppercase character and 1 special character)
 - Lưu thông tin cá nhân và lịch sử mua vé.
 
 ### 🎟️ Quản lý Vé ( ticket ) 
-- Hiển thị ( show ) địa điểm rạp ( place ), giờ chiếu ( showtime ), số ghế còn trống ( blank_space ).
+- Hiển thị giờ chiếu ( showtime ), số ghế còn trống ( blank_space ).
 
 ### 💬 Tương tác Người dùng
 - Đặt/hủy vé.( booking / cancel ).
@@ -51,28 +47,13 @@ Trong bối cảnh công nghệ thông tin phát triển mạnh mẽ, nhu cầu 
 ---
 
 ## 4. Công nghệ sử dụng
-- **Ngôn ngữ lập trình**: Java / C++ / Python (tùy nhóm chọn).
+- **Ngôn ngữ lập trình**: Java
 - **Paradigm**: Lập trình Hướng Đối Tượng (OOP).
 - **IDE**: IntelliJ IDEA / Eclipse / VS Code.
 - **Quản lý mã nguồn**: GitHub/GitLab.
 
 ---
 
-## 5. UML Class Diagram (tóm tắt)
-- `Movie`: id, title, genre, duration, rating, description.
-- `Cinema`: id, name, location, rooms.
-- `Room`: id, name, seats.
-- `Seat`: id, row, number, status.
-- `Showtime`: id, movie, room, startTime, endTime, price.
-- `User`: id, name, email, phone, password.
-- `Booking`: id, user, showtime, seats, totalPrice, status.
-- `Payment`: id, booking, amount, method, status.
+## 5. UML Class Diagram
+- https://online.visual-paradigm.com/share.jsp?id=343334333334312d3130
 
-(Chi tiết sẽ được thể hiện trong sơ đồ UML của dự án.)
-
----
-
-## 6. Hướng dẫn chạy chương trình
-1. Clone project về máy:
-   ```bash
-   git clone <repository-url>
