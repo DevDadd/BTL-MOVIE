@@ -1,10 +1,7 @@
 package com.mycompany.movieapp.views;
 
-import com.mycompany.movieapp.services.MovieService;
-import com.mycompany.movieapp.services.UserService;
 import com.mycompany.movieapp.models.Movie;
-import com.mycompany.movieapp.models.User;
-import com.mycompany.movieapp.models.Staff;
+import com.mycompany.movieapp.services.MovieService;
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,49 +10,49 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 
-public class HomePage extends javax.swing.JFrame {
+/**
+ *
+ * @author taova
+ */
+public class resultView extends javax.swing.JDialog {
+    private String searchInput;
+    private List<Movie> allMovies;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HomePage.class.getName());
-    private final User currentUser;
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(resultView.class.getName());
 
-    public HomePage() {
-        this(UserService.getCurrentUser());
-    }
-
-    public HomePage(User currentUser) {
-        this.currentUser = currentUser;
+    /**
+     * Creates new form resultView
+     */
+    public resultView(javax.swing.JFrame parent, String searchInput) {
+        super(parent, true);
+        this.searchInput = searchInput;
+        this.allMovies = com.mycompany.movieapp.utils.DataLoader.getMovies();
         initComponents();
-
-        if (com.mycompany.movieapp.utils.DataLoader.getMovies().isEmpty()) {
-            com.mycompany.movieapp.utils.DataLoader.loadDemoData();
-        }
-
-        configureAdminAccess();
-        loadNowShowingMovies();
+        loadSearchedMovie();
     }
-
-    private void loadNowShowingMovies() {
-        List<Movie> allMovies = com.mycompany.movieapp.utils.DataLoader.getMovies();
-        List<Movie> nowShowingMovies = MovieService.getNowShowingMovies(allMovies);
-
-        System.out.println("Tổng phim: " + allMovies.size());
-        System.out.println("Đang chiếu: " + nowShowingMovies.size());
+    
+    private void loadSearchedMovie() {
+        String keyword = searchInput;
+        if (keyword == null || keyword.trim().isEmpty() || keyword.equals("Search phim")) {
+            keyword = "";
+        }
+        
+        List<Movie> resultMovies = MovieService.searchMovies(keyword, allMovies);
 
         jPanelMoviesContainer.removeAll();
 
-        if (nowShowingMovies.isEmpty()) {
-            javax.swing.JLabel noMoviesLabel = new javax.swing.JLabel("Không có phim nào đang chiếu.");
+        if (resultMovies.isEmpty()) {
+            javax.swing.JLabel noMoviesLabel = new javax.swing.JLabel("Không tìm thấy phim nào với từ khóa: \"" + keyword + "\"");
             noMoviesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             noMoviesLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             jPanelMoviesContainer.add(noMoviesLabel);
         } else {
-            for (Movie movie : nowShowingMovies) {
+            jLabelResult.setText("Tìm thấy " + resultMovies.size() + " phim với từ khóa: \"" + keyword + "\"");
+            for (Movie movie : resultMovies) {
                 javax.swing.JPanel moviePanel = createMovieContainer(movie);
                 jPanelMoviesContainer.add(moviePanel);
                 jPanelMoviesContainer.add(javax.swing.Box.createVerticalStrut(15));
@@ -64,10 +61,6 @@ public class HomePage extends javax.swing.JFrame {
 
         jPanelMoviesContainer.revalidate();
         jPanelMoviesContainer.repaint();
-    }
-
-    public void refreshMovies() {
-        loadNowShowingMovies();
     }
     
     private javax.swing.JPanel createMovieContainer(Movie movie) {
@@ -81,7 +74,6 @@ public class HomePage extends javax.swing.JFrame {
         container.setPreferredSize(new Dimension(0, 130));
         container.setMaximumSize(new Dimension(Integer.MAX_VALUE, 130));
         
-       
         container.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -140,10 +132,10 @@ public class HomePage extends javax.swing.JFrame {
         rightPanel.add(durationLabel, BorderLayout.NORTH);
         
         String description = movie.getDescription();
-        if (description.length() > 100) {
+        if (description != null && description.length() > 100) {
             description = description.substring(0, 97) + "...";
         }
-        javax.swing.JTextArea descArea = new javax.swing.JTextArea(description);
+        javax.swing.JTextArea descArea = new javax.swing.JTextArea(description != null ? description : "");
         descArea.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         descArea.setForeground(new Color(80, 80, 80));
         descArea.setBackground(Color.WHITE);
@@ -160,91 +152,30 @@ public class HomePage extends javax.swing.JFrame {
     }
     
     private void showMovieSchedules(Movie movie) {
-        MovieScheduleView scheduleView = new MovieScheduleView(this, movie, this);
+        MovieScheduleView scheduleView = new MovieScheduleView((javax.swing.JFrame) getParent(), movie, null);
         scheduleView.setVisible(true);
     }
-    
-    private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        BookingHistoryPage historyPage = new BookingHistoryPage();
-        historyPage.setVisible(true);
-    }
 
-    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        if (!isAdminUser()) {
-            JOptionPane.showMessageDialog(this,
-                    "Bạn không có quyền truy cập chức năng này.",
-                    "Access Denied",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        Configure configurePage = new Configure(this);
-        configurePage.setVisible(true);
-    }
-
-    private boolean isAdminUser() {
-        if (currentUser != null && currentUser instanceof Staff) {
-            String role = ((Staff) currentUser).getRole();
-            return role != null && role.equalsIgnoreCase("Admin");
-        }
-        return false;
-    }
-
-    private void configureAdminAccess() {
-        boolean admin = isAdminUser();
-        if (adminButton != null) {
-            adminButton.setEnabled(admin);
-            if (!admin) {
-                adminButton.setToolTipText("Chỉ dành cho admin");
-            } else {
-                adminButton.setToolTipText(null);
-            }
-        }
-    }
-
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabelResult = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelMoviesContainer = new javax.swing.JPanel();
-        historyButton = new javax.swing.JButton();
-        adminButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Kết quả tìm kiếm");
         setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("PHIM ĐANG CHIẾU");
-        
-        searchButton.setText("Search");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String searchInput = searchField.getText();
-                resultView rsView = new resultView(HomePage.this,searchInput);
-                rsView.setVisible(true);
-                HomePage.this.dispose();
-            }
-        });
-        searchField.setText("Search phim");
-        
-        adminButton.setText("Quản lý");
-        adminButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        adminButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminButtonActionPerformed(evt);
-            }
-        });
-
-        historyButton.setText("Vé của tôi");
-        historyButton.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        historyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                historyButtonActionPerformed(evt);
-            }
-        });
+        jLabelResult.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabelResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelResult.setText("KẾT QUẢ TÌM KIẾM");
 
         jPanelMoviesContainer.setBackground(new java.awt.Color(245, 245, 245));
         jPanelMoviesContainer.setLayout(new javax.swing.BoxLayout(jPanelMoviesContainer, javax.swing.BoxLayout.Y_AXIS));
@@ -258,16 +189,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchField)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(historyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(adminButton))
+                    .addComponent(jLabelResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -275,21 +197,24 @@ public class HomePage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(historyButton)
-                    .addComponent(searchField)
-                    .addComponent(adminButton)
-                    .addComponent(searchButton))
+                .addComponent(jLabelResult)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -300,14 +225,19 @@ public class HomePage extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        java.awt.EventQueue.invokeLater(() -> new HomePage().setVisible(true));
+        //</editor-fold>
+
+        /* Create and display the form */
+        com.mycompany.movieapp.utils.DataLoader.loadDemoData();
+        java.awt.EventQueue.invokeLater(() -> {
+            resultView dialog = new resultView(null, "");
+            dialog.setVisible(true);
+        });
     }
 
-    private javax.swing.JButton historyButton;
-    private javax.swing.JButton adminButton;
-    private javax.swing.JLabel jLabel1;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelResult;
     private javax.swing.JPanel jPanelMoviesContainer;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField searchField;
-    private javax.swing.JButton searchButton;
+    // End of variables declaration//GEN-END:variables
 }
