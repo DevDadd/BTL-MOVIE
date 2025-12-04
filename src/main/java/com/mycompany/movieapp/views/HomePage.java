@@ -223,9 +223,9 @@ public class HomePage extends javax.swing.JFrame {
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 String searchInput = searchField.getText();
-                resultView rsView = new resultView(HomePage.this,searchInput);
+                resultView rsView = new resultView(HomePage.this, searchInput);
                 rsView.setVisible(true);
-                HomePage.this.dispose();
+                HomePage.this.setVisible(false); // Ẩn thay vì dispose để có thể quay lại
             }
         });
         searchField.setText("Search phim");

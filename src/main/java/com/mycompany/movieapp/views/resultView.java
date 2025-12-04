@@ -152,8 +152,16 @@ public class resultView extends javax.swing.JDialog {
     }
     
     private void showMovieSchedules(Movie movie) {
-        MovieScheduleView scheduleView = new MovieScheduleView((javax.swing.JFrame) getParent(), movie, null);
+        // Truyền resultView làm parent thay vì HomePage để đảm bảo modal đúng
+        javax.swing.JFrame parentFrame = (javax.swing.JFrame) getParent();
+        // Ẩn HomePage nếu nó vẫn còn để không che các cửa sổ sau
+        if (parentFrame != null && parentFrame.isDisplayable()) {
+            parentFrame.setVisible(false);
+        }
+        MovieScheduleView scheduleView = new MovieScheduleView(parentFrame, movie, null);
         scheduleView.setVisible(true);
+        // Đóng resultView sau khi mở lịch chiếu
+        this.dispose();
     }
 
     /**
@@ -168,6 +176,18 @@ public class resultView extends javax.swing.JDialog {
         jLabelResult = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelMoviesContainer = new javax.swing.JPanel();
+        closeButton = new javax.swing.JButton("Đóng");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resultView.this.dispose();
+                // Hiện lại HomePage nếu nó vẫn còn (chưa bị dispose)
+                javax.swing.JFrame parent = (javax.swing.JFrame) getParent();
+                if (parent != null && parent.isDisplayable()) {
+                    parent.setVisible(true);
+                    parent.toFront();
+                }
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kết quả tìm kiếm");
@@ -190,6 +210,7 @@ public class resultView extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(closeButton)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -200,6 +221,8 @@ public class resultView extends javax.swing.JDialog {
                 .addComponent(jLabelResult)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addComponent(closeButton)
                 .addContainerGap())
         );
 
@@ -239,5 +262,6 @@ public class resultView extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelResult;
     private javax.swing.JPanel jPanelMoviesContainer;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton closeButton;
     // End of variables declaration//GEN-END:variables
 }

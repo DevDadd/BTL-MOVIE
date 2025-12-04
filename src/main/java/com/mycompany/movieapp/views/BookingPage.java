@@ -172,6 +172,9 @@ public class BookingPage extends javax.swing.JFrame {
                     "\nTổng tiền: " + String.format("%,.0f VNĐ", booking.getTotalPrice()), 
                     "Thành công", 
                     JOptionPane.INFORMATION_MESSAGE);
+                
+                // Mở lại HomePage sau khi đặt chỗ thành công
+                openHomePage();
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 
@@ -194,6 +197,24 @@ public class BookingPage extends javax.swing.JFrame {
             sb.append(selectedSeats.get(i).getSeat().getSeatCode());
         }
         return sb.toString();
+    }
+    
+    private void openHomePage() {
+        // Nếu có HomePage đã tồn tại (chưa bị dispose), hiện lại nó
+        if (homePage != null && homePage.isDisplayable()) {
+            homePage.setVisible(true);
+            homePage.toFront();
+            homePage.requestFocus();
+            // Refresh danh sách phim
+            homePage.refreshMovies();
+        } else {
+            // Nếu không có HomePage, tạo mới
+            com.mycompany.movieapp.models.User currentUser = com.mycompany.movieapp.services.UserService.getCurrentUser();
+            HomePage newHomePage = new HomePage(currentUser);
+            newHomePage.setVisible(true);
+            newHomePage.toFront();
+            newHomePage.requestFocus();
+        }
     }
     
     @SuppressWarnings("unchecked")

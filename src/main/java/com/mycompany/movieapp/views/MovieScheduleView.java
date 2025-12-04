@@ -156,6 +156,9 @@ public class MovieScheduleView extends javax.swing.JDialog {
     private void openBookingPage(Schedule schedule) {
         BookingPage bookingPage = new BookingPage(schedule, homePage);
         bookingPage.setVisible(true);
+        // Đảm bảo BookingPage được focus và hiển thị ở trên cùng
+        bookingPage.toFront();
+        bookingPage.requestFocus();
         this.dispose();
     }
 
