@@ -38,8 +38,7 @@ Xuất phát từ thực tế đó, đề tài "**Xây dựng ứng dụng quả
 | **Giai đoạn 2: Phát triển & Cài đặt (Tuần 3-6)** | Phát triển các lớp đối tượng (Movie, User, Ticket, …) | Nguyễn Tấn Dũng, Nguyễn Quang Anh, Trần Quang Tiến|
 | | Cài đặt chức năng hiển thị và đặt vé phim | Tô Thanh Phương |
 | | Cài đặt chức năng quản lý lịch sử đặt vé | Trần Hải Nam |
-| | Xây dựng giao diện người dùng (Console/GUI đơn giản) | Trần Quang Tiến |
-| | Cài đặt chức năng quản lý danh sách xem cá nhân | Nguyễn Quang Anh |
+| | Xây dựng giao diện người dùng (Console/GUI đơn giản) | Trần Quang Tiến, Nguyễn Quang Anh |
 | **Giai đoạn 3: Kiểm thử & Hoàn thiện (Tuần 7-8)** | Kiểm thử từng chức năng và toàn bộ ứng dụng | Cả nhóm |
 | | Sửa lỗi và tối ưu hiệu suất | Cả nhóm |
 | | Chuẩn bị báo cáo dự án | Cả nhóm |
