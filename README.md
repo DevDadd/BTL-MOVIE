@@ -28,24 +28,7 @@ Xuất phát từ thực tế đó, đề tài "**Xây dựng ứng dụng quả
 - Tra cứu vé đã đặt.
 ---
 
-## 3. Bảng phân công công việc
-
-| Giai đoạn | Công việc chi tiết | Người thực hiện |
-|-----------|-------------------|-----------------|
-| **Giai đoạn 1: Lập kế hoạch & Thiết kế (Tuần 1-2)** | Nghiên cứu và phân tích yêu cầu | Trần Quang Tiến, Tô Thanh Phương |
-| | Thiết kế cấu trúc lớp (Class Diagram) và mối quan hệ | Nguyễn Tấn Dũng, Tô Thanh Phương |
-| | Thiết kế luồng hoạt động của chương trình | Trần Hải Nam |
-| **Giai đoạn 2: Phát triển & Cài đặt (Tuần 3-6)** | Phát triển các lớp đối tượng (Movie, User, Ticket, …) | Nguyễn Tấn Dũng, Nguyễn Quang Anh, Trần Quang Tiến|
-| | Cài đặt chức năng hiển thị và đặt vé phim | Tô Thanh Phương |
-| | Cài đặt chức năng quản lý lịch sử đặt vé | Trần Hải Nam |
-| | Xây dựng giao diện người dùng (Console/GUI đơn giản) | Trần Quang Tiến, Nguyễn Quang Anh |
-| **Giai đoạn 3: Kiểm thử & Hoàn thiện (Tuần 7-8)** | Kiểm thử từng chức năng và toàn bộ ứng dụng | Cả nhóm |
-| | Sửa lỗi và tối ưu hiệu suất | Cả nhóm |
-| | Chuẩn bị báo cáo dự án | Cả nhóm |
-
----
-
-## 4. Công nghệ sử dụng
+## 3. Công nghệ sử dụng
 - **Ngôn ngữ lập trình**: Java
 - **Paradigm**: Lập trình Hướng Đối Tượng (OOP).
 - **IDE**: IntelliJ IDEA / Eclipse / VS Code.
@@ -53,6 +36,6 @@ Xuất phát từ thực tế đó, đề tài "**Xây dựng ứng dụng quả
 
 ---
 
-## 5. UML Class Diagram
+## 4. UML Class Diagram
 - https://online.visual-paradigm.com/share.jsp?id=343334333334312d3130
 
